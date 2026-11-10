@@ -22,10 +22,14 @@
 .memory-card__back { justify-content: center; transform: rotateY(180deg); background: var(--sage-light); text-align: center; }
 .memory-card__back-title { margin: 0; }
 .memory-card__note { margin-top: var(--space-3); white-space: pre-wrap; overflow-wrap: anywhere; font-size: .9rem; line-height: 1.5; }
+.cre-grid .polaroid { width: 100%; min-width: 0; margin: 0; }
 .cre-grid .polaroid img { aspect-ratio: auto; max-height: 360px; object-fit: contain; }
-.community-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--space-3); margin: var(--space-3) 0 var(--space-5); }
-.community-card { display: flex; flex-direction: column; gap: var(--space-1); min-height: 112px; padding: var(--space-3); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--white); box-shadow: var(--shadow-soft); text-decoration: none; overflow-wrap: anywhere; }
-.community-card span { color: var(--brown-soft); font-size: .85rem; }
+.community-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-4) var(--space-3); margin: var(--space-3) 0 var(--space-5); }
+.community-card { display: flex; flex-direction: column; align-self: start; color: var(--brown); text-decoration: none; overflow-wrap: anywhere; }
+.community-card img { width: 100%; aspect-ratio: auto; max-height: 360px; object-fit: contain; border-radius: 3px; background: var(--cream); }
+.community-card figcaption { font-family: var(--font-heading); font-size: 1.15rem; text-align: center; margin-top: var(--space-2); }
+.community-card__placeholder { display: grid; place-items: center; width: 100%; min-height: 150px; padding: var(--space-2); border-radius: 3px; background: var(--cream); color: var(--brown-soft); text-align: center; font-family: var(--font-heading); font-size: 1.15rem; }
+.community-card:focus-visible { outline-offset: 6px; }
 .community-submit { margin: var(--space-4) 0; }
 .community-submit > summary { cursor: pointer; min-height: var(--tap); display: flex; align-items: center; font-weight: 700; }
 .community-submit > summary::after { content: "+"; margin-left: auto; font-size: 1.5rem; color: var(--rose); }

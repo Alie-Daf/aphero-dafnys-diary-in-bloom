@@ -2,7 +2,7 @@
 import "./nav.js";
 import { supabase, notConnectedMessage } from "./supabaseClient.js";
 import { escapeHtml, formatDate, monthsaryDate, toast } from "./utils.js";
-import { createSharedPost, imageDataUrl, postUrl, renderShareResult, POST_KINDS } from "./sharing.js";
+import { createSharedPost, imageDataUrl, postUrl, renderShareResult, safeImageUrl } from "./sharing.js";
 
 const $ = (id) => document.getElementById(id);
 let creations = [];
@@ -15,7 +15,7 @@ async function main() {
   const [mem, cre, shared] = await Promise.all([
     supabase.from("memories").select("*").order("month_number").order("date"),
     supabase.from("creations").select("*").order("created_at", { ascending: false }),
-    supabase.from("shared_posts").select("slug,kind,title,created_at").order("created_at", { ascending: false }).limit(100),
+    supabase.from("shared_posts").select("slug,kind,title,payload,created_at").order("created_at", { ascending: false }).limit(100),
   ]);
   if (mem.error || cre.error) { $("mem-status").textContent = "Couldn't load memories right now. Check your internet connection."; return; }
   renderTimeline(mem.data);
@@ -45,7 +45,7 @@ $("memory-post-form").addEventListener("submit", async event => {
     event.target.reset();
     toast("Your memory is now public");
     const { data, error } = await supabase.from("shared_posts")
-      .select("slug,kind,title,created_at").eq("slug", shared.slug).single();
+      .select("slug,kind,title,payload,created_at").eq("slug", shared.slug).single();
     if (error) throw error;
     renderCommunity([data, ...communityPosts.filter(post => post.slug !== data.slug)], activeFilter);
   } catch (error) {
@@ -126,13 +126,24 @@ function renderCommunity(posts, filter) {
       : `No public ${kindLabel}s yet.`;
   visiblePosts.forEach(post => {
     const link = document.createElement("a");
-    link.className = "community-card";
+    link.className = "community-card polaroid";
     link.href = postUrl(post.slug);
-    const title = document.createElement("strong");
-    title.textContent = post.title;
-    const type = document.createElement("span");
-    type.textContent = POST_KINDS[post.kind] || "Creation";
-    link.append(title, type);
+    const image = safeImageUrl(post.payload?.image);
+    if (image) {
+      const preview = document.createElement("img");
+      preview.src = image;
+      preview.alt = `${post.title} — ${post.kind === "bouquet" ? "shared bouquet" : post.kind === "photostrip" ? "shared photo strip" : "shared image"}`;
+      preview.loading = "lazy";
+      link.append(preview);
+    } else {
+      const placeholder = document.createElement("span");
+      placeholder.className = "community-card__placeholder";
+      placeholder.textContent = post.title;
+      link.append(placeholder);
+    }
+    const caption = document.createElement("figcaption");
+    caption.textContent = post.title;
+    link.append(caption);
     grid.append(link);
   });
 }

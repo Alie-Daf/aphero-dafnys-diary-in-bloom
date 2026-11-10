@@ -147,7 +147,8 @@ function openBook(item) {
 function turn(dir) {
   const ni = pageIndex + dir * step();
   if (ni < 0 || ni >= pages.length) return;
-  pageIndex = ni; showPages(true);
+  pageIndex = ni;
+  showPages(true);
 }
 
 $("shelf").addEventListener("click", (e) => {

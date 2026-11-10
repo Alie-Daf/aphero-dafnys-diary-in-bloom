@@ -188,5 +188,6 @@
   .envelope-preview-card { min-height: 190px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .preview-card__inner { transition: none; }
+  .preview-card__inner, .envelope__paper, .envelope__flap, .envelope__seal { transition: none; }
+  .letter-reveal { animation: none !important; }
 }

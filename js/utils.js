@@ -185,3 +185,23 @@ export function monthsaryDate(n) {
 }
 
 export const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+export function openEnvelope(stage, envelope) {
+  const revealLetter = () => stage.classList.add("is-revealed");
+  if (prefersReducedMotion()) {
+    stage.classList.add("is-open", "is-revealed");
+    return;
+  }
+
+  const paper = envelope.querySelector(".envelope__paper");
+  if (!paper) {
+    stage.classList.add("is-open");
+    revealLetter();
+    return;
+  }
+
+  paper.addEventListener("transitionend", event => {
+    if (event.target === paper && event.propertyName === "transform") revealLetter();
+  }, { once: true });
+  stage.classList.add("is-open");
+}

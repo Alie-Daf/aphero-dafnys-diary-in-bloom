@@ -1,7 +1,7 @@
 // letter-view.js — opens ONE letter by its secret slug: letter-view.html?slug=abc123...
 import "./nav.js";
 import { supabase, notConnectedMessage } from "./supabaseClient.js";
-import { spotifyEmbedUrl, mountSpotifyPlayer, prefersReducedMotion } from "./utils.js";
+import { spotifyEmbedUrl, mountSpotifyPlayer, openEnvelope } from "./utils.js";
 import { letterHtml, parseTheme, ENVELOPES, SEALS, SEAL_ICONS } from "./letterTheme.js";
 import { icon } from "./icons.js";
 
@@ -35,10 +35,8 @@ async function main() {
   env.addEventListener("click", () => {
     const stage = $("stage");
     if (song) mountSpotifyPlayer($("letter-song-player"), $("letter-song-toggle"), $("letter-song-status"), song);
-    stage.classList.add("is-open");
     if (song) $("envelope-hint").textContent = "Opening your letter…";
-    // Wait for the flap + paper animation, then show the full letter.
-    setTimeout(() => stage.classList.add("is-revealed"), prefersReducedMotion() ? 0 : 1300);
+    openEnvelope(stage, env);
   }, { once: true });
 }
 main();

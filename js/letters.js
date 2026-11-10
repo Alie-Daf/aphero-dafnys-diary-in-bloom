@@ -12,6 +12,7 @@ const form = $("letter-form");
 let user = null;
 let editId = null;            // when set, Save updates instead of inserting
 let chosenStickers = [];
+let lettersByMood = new Map();
 
 // ---------- Build the composer controls from our shared lists ----------
 $("openwhen").innerHTML += Object.entries(OPEN_WHEN).map(([k, v]) => `<option value="${k}">Open when ${v.label}</option>`).join("");
@@ -130,6 +131,7 @@ function showStep(step) {
 function openComposer(step = 1) {
   $("composer").hidden = false;
   $("openwhen-section").hidden = true;
+  $("openwhen-collection").hidden = true;
   $("all-letters-section").hidden = true;
   $("start-letter").hidden = true;
   showStep(step);
@@ -137,6 +139,7 @@ function openComposer(step = 1) {
 function closeComposer() {
   $("composer").hidden = true;
   $("openwhen-section").hidden = false;
+  $("openwhen-collection").hidden = true;
   $("all-letters-section").hidden = false;
   $("start-letter").hidden = false;
   $("letter-page-title").textContent = "Notes for you";
@@ -153,6 +156,26 @@ $("preview-flip").addEventListener("click", () => {
   $("preview-flip").setAttribute("aria-pressed", String(flipped));
   $("preview-flip").textContent = flipped ? "Flip card back" : "Flip card";
 });
+$("back-to-folders").addEventListener("click", () => {
+  $("openwhen-collection").hidden = true;
+  $("openwhen-section").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+$("openwhen-grid").addEventListener("click", event => {
+  const folder = event.target.closest("[data-openwhen]");
+  if (!folder) return;
+  const mood = folder.dataset.openwhen;
+  const info = OPEN_WHEN[mood];
+  if (!info) return;
+
+  const letters = lettersByMood.get(mood) || [];
+  $("openwhen-collection-title").textContent = `Open when ${info.label}`;
+  $("openwhen-collection-status").textContent = letters.length
+    ? `${letters.length} ${letters.length === 1 ? "letter" : "letters"} in this folder`
+    : "This folder is empty for now. Write a letter and choose this mood to add it.";
+  $("openwhen-collection-list").innerHTML = renderLetterList(letters);
+  $("openwhen-collection").hidden = false;
+  $("openwhen-collection").scrollIntoView({ behavior: "smooth", block: "start" });
+});
 
 // ---------- Load and show letters ----------
 async function loadLetters() {
@@ -160,7 +183,7 @@ async function loadLetters() {
   const [lettersResult, postsResult] = await Promise.all([
     supabase.from("letters").select("id,title,open_when,share_slug,created_at").order("created_at", { ascending: false }),
     supabase.from("shared_posts").select("slug,title,payload,created_at")
-      .eq("kind", "letter").order("created_at", { ascending: false }).limit(100),
+      .eq("kind", "letter").order("created_at", { ascending: false }),
   ]);
   if (lettersResult.error) { $("letters-status").textContent = "Couldn't load letters right now. Try refreshing."; console.error(lettersResult.error); return; }
   const data = lettersResult.data;
@@ -170,28 +193,42 @@ async function loadLetters() {
     shared: true,
   }));
   if (postsResult.error) console.error("Could not load community letters.", postsResult.error);
+  lettersByMood = new Map(Object.keys(OPEN_WHEN).map(mood => [mood, [
+    ...data.filter(letter => letter.open_when === mood).map(letter => ({
+      ...letter,
+      href: `letter-view.html?slug=${encodeURIComponent(letter.share_slug)}`,
+    })),
+    ...sharedLetters.filter(letter => letter.open_when === mood).map(letter => ({
+      ...letter,
+      href: `post.html?slug=${encodeURIComponent(letter.slug)}`,
+    })),
+  ].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))]));
   renderOpenWhen(data, sharedLetters);
   const regular = [
     ...data.filter(l => !l.open_when).map(l => ({ ...l, href: `letter-view.html?slug=${encodeURIComponent(l.share_slug)}` })),
     ...sharedLetters.filter(l => !l.open_when).map(l => ({ ...l, href: `post.html?slug=${encodeURIComponent(l.slug)}` })),
   ];
   $("letters-status").textContent = regular.length ? "" : "No letters yet… one is on its way";
-  $("letter-list").innerHTML = regular.map(l => `
+  $("letter-list").innerHTML = renderLetterList(regular);
+}
+
+function renderLetterList(letters) {
+  return letters.map(letter => `
     <li>
-      <a class="open" href="${l.href}"><span aria-hidden="true">${icon("letter")}</span>${escapeHtml(l.title)}</a>
-      <time datetime="${l.created_at}">${formatDate(l.created_at)}</time>
-      ${user && !l.shared ? `<a class="btn btn--small btn--ghost" href="?edit=${l.id}">Edit</a>` : ""}
+      <a class="open" href="${letter.href}"><span aria-hidden="true">${icon("letter")}</span>${escapeHtml(letter.title)}</a>
+      <time datetime="${escapeHtml(letter.created_at)}">${formatDate(letter.created_at)}</time>
+      ${user && !letter.shared ? `<a class="btn btn--small btn--ghost" href="?edit=${encodeURIComponent(letter.id)}">Edit</a>` : ""}
     </li>`).join("");
 }
 
 function renderOpenWhen(letters, sharedLetters = []) {
   $("openwhen-grid").innerHTML = Object.entries(OPEN_WHEN).map(([key, v]) => {
-    const l = [...letters.filter(x => x.open_when === key), ...sharedLetters.filter(x => x.open_when === key)]
-      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+    const count = letters.filter(letter => letter.open_when === key).length
+      + sharedLetters.filter(letter => letter.open_when === key).length;
     const inner = `<span class="icon-badge ow-card__icon" aria-hidden="true">${icon(v.icon)}</span><span class="ow-card__label">Open when ${v.label}</span>`;
-    const href = l?.shared ? `post.html?slug=${encodeURIComponent(l.slug)}` : `letter-view.html?slug=${encodeURIComponent(l?.share_slug || "")}`;
-    return l ? `<a class="ow-card" href="${href}">${inner}</a>`
-      : `<div class="ow-card ow-card--empty">${inner}<span class="hint">coming soon</span></div>`;
+    return `<button class="ow-card" type="button" data-openwhen="${key}" aria-label="Open when ${escapeHtml(v.label)} folder, ${count} ${count === 1 ? "letter" : "letters"}">
+      ${inner}<span class="hint">${count} ${count === 1 ? "letter" : "letters"}</span>
+    </button>`;
   }).join("");
 }
 

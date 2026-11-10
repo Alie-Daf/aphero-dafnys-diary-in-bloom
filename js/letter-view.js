@@ -14,8 +14,8 @@ async function main() {
   if (!supabase) { status.textContent = notConnectedMessage(); return; }
 
   const { data: letter, error } = await supabase.from("letters").select("*").eq("share_slug", slug).maybeSingle();
-  if (error) { status.textContent = "Couldn't fetch the letter right now. Check your internet and try again 💭"; return; }
-  if (!letter) { status.textContent = "Hmm, I can't find this letter. Double-check the link 💌"; return; }
+  if (error) { status.textContent = "Couldn't fetch the letter right now. Check your internet and try again"; return; }
+  if (!letter) { status.textContent = "Hmm, I can't find this letter. Double-check the link"; return; }
 
   document.title = `${letter.title} | Dafny's Diary in Bloom`;
   $("letter-slot").innerHTML = letterHtml(letter);

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <!-- Asks search engines not to list this page. A request, not protection. -->
   <meta name="robots" content="noindex, nofollow">
-  <title>Letter Room 💌 | Dafny's Diary in Bloom</title>
+  <title>Letter Room | Dafny's Diary in Bloom</title>
   <meta name="description" content="Letters written for Dafny.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -130,6 +130,15 @@
     <section id="openwhen-section" aria-labelledby="ow-title">
       <h2 id="ow-title">Open when…</h2>
       <div class="openwhen" id="openwhen-grid"></div>
+    </section>
+
+    <section id="openwhen-collection" aria-labelledby="openwhen-collection-title" hidden>
+      <div class="letter-collection-heading">
+        <h2 id="openwhen-collection-title"></h2>
+        <button class="btn btn--ghost" type="button" id="back-to-folders">← All folders</button>
+      </div>
+      <p class="hint" id="openwhen-collection-status" role="status"></p>
+      <ul class="letter-list" id="openwhen-collection-list"></ul>
     </section>
 
     <section id="all-letters-section" aria-labelledby="all-title">

@@ -122,7 +122,7 @@ export async function mountSpotifyPlayer(container, button, status, url) {
       isPlaying = !event.data.isPaused;
       button.textContent = isPlaying ? "Pause song" : "Play song";
       button.setAttribute("aria-pressed", String(isPlaying));
-      status.textContent = isPlaying ? "Playing here while you read 💚" : "Use Play song to listen here while you read.";
+      status.textContent = isPlaying ? "Playing here while you read" : "Use Play song to listen here while you read.";
     });
     button.disabled = false;
     button.textContent = "Play song";

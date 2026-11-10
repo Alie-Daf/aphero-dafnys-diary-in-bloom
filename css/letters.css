@@ -4,12 +4,18 @@
 .ow-card { min-height: 132px; display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: var(--space-2); padding: var(--space-3); border: 1px solid rgba(168,96,110,.24); border-radius: var(--radius);
   background: #FFF2F1; color: var(--brown); text-align: center; text-decoration: none; box-shadow: var(--shadow-soft); }
+.ow-card { width: 100%; font: inherit; cursor: pointer; }
+.ow-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+.ow-card:focus-visible { outline: 3px solid var(--rose); outline-offset: 3px; }
 .ow-card:nth-child(even) { background: #F2F5ED; }
 .ow-card__icon { width: 42px; height: 42px; }
 .ow-card__icon .icon { width: 21px; height: 21px; }
 .ow-card__label { font-family: var(--font-display); font-size: 1.16rem; font-style: italic; line-height: 1.1; }
 .ow-card .hint { margin: 0; font-size: .78rem; }
 .ow-card--empty { opacity: .76; }
+.letter-collection-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.letter-collection-heading h2 { margin: 0; }
+.letter-collection-heading .btn { flex: 0 0 auto; }
 
 
 .letter-list { list-style: none; padding: 0; margin: 0 0 var(--space-5); display: grid; gap: var(--space-2); }

@@ -25,7 +25,7 @@ $("login-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   try {
     await signIn($("email").value.trim(), $("password").value);
-    toast("Welcome back 🌸");
+    toast("Welcome back.");
     showState();
   } catch (err) {
     toast("Login failed: " + (err.message || "check your email and password"));
@@ -63,8 +63,8 @@ $("memory-form").addEventListener("submit", async (e) => {
       title: $("m-title").value.trim(), note: $("m-note").value, photo_url,
     });
     if (error) throw error;
-    e.target.reset(); toast("Memory added 🖼️"); loadMemories();
-  } catch (err) { toast("Upload failed 🥺 " + err.message); }
+    e.target.reset(); toast("Memory added."); loadMemories();
+  } catch (err) { toast("Upload failed. " + err.message); }
   btn.disabled = false;
 });
 
@@ -78,7 +78,7 @@ $("bulk-form").addEventListener("submit", async (e) => {
   e.submitter.disabled = true;
   for (const file of files) {           // one at a time, so one failure doesn't stop the rest
     const li = document.createElement("li");
-    li.textContent = `⏳ ${file.name}`; list.appendChild(li);
+    li.textContent = `Uploading: ${file.name}`; list.appendChild(li);
     try {
       const ext = extOf(file.name);
       const title = file.name.replace(/\.[^.]+$/, "");
@@ -92,8 +92,8 @@ $("bulk-form").addEventListener("submit", async (e) => {
       }
       const { error } = await supabase.from("library_items").insert(row);
       if (error) throw error;
-      li.textContent = `✅ ${file.name}`;
-    } catch (err) { li.textContent = `❌ ${file.name}: ${err.message}`; }
+      li.textContent = `Uploaded: ${file.name}`;
+    } catch (err) { li.textContent = `Failed: ${file.name}: ${err.message}`; }
   }
   e.submitter.disabled = false;
   loadLibrary();
@@ -105,8 +105,8 @@ $("paste-form").addEventListener("submit", async (e) => {
     title: $("p-title").value.trim(), type: "text", content: $("p-content").value,
     tags: tagsFrom($("p-tags").value), written_on: $("p-date").value || null,
   });
-  if (error) return toast("Couldn't save 🥺 " + error.message);
-  e.target.reset(); toast("Added to the library 📚"); loadLibrary();
+  if (error) return toast("Couldn't save. " + error.message);
+  e.target.reset(); toast("Added to the library."); loadLibrary();
 });
 
 // ---------- Creations ----------
@@ -119,8 +119,8 @@ $("creation-form").addEventListener("submit", async (e) => {
     const image_url = await uploadPublic("creations", file, extOf(file.name));
     const { error } = await supabase.from("creations").insert({ type: $("c-type").value, image_url });
     if (error) throw error;
-    e.target.reset(); toast("Added to the Memory Wall 💐"); loadCreations();
-  } catch (err) { toast("Upload failed 🥺 " + err.message); }
+    e.target.reset(); toast("Added to the Memory Wall."); loadCreations();
+  } catch (err) { toast("Upload failed. " + err.message); }
   e.submitter.disabled = false;
 });
 

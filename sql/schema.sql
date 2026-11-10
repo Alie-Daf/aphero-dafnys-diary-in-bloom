@@ -111,4 +111,4 @@ create policy "diary admin update" on storage.objects for update to authenticate
 create policy "diary admin delete" on storage.objects for delete to authenticated
   using (bucket_id in ('library-files','memory-photos','creations') and public.is_admin());
 
--- Done! Test: open a page while logged out — reading works, saving fails. 🌸
+-- Done! Test: open a page while logged out — reading works, saving fails.

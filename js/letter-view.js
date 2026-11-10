@@ -10,7 +10,7 @@ const status = $("view-status");
 const slug = new URLSearchParams(location.search).get("slug");
 
 async function main() {
-  if (!slug) { status.textContent = "This envelope is empty… the link might be missing a part 🥺"; return; }
+  if (!slug) { status.textContent = "This envelope is empty. The link might be incomplete."; return; }
   if (!supabase) { status.textContent = notConnectedMessage(); return; }
 
   const { data: letter, error } = await supabase.from("letters").select("*").eq("share_slug", slug).maybeSingle();

@@ -62,7 +62,7 @@ $("stickers").addEventListener("click", (e) => {
   const s = b.dataset.s;
   if (chosenStickers.includes(s)) chosenStickers = chosenStickers.filter(x => x !== s);
   else if (chosenStickers.length < 6) chosenStickers.push(s);
-  else toast("Six stickers max, the letter needs room to breathe 🌸");
+  else toast("You can add up to six stickers.");
   syncStickerButtons();
   renderPreview();
 });
@@ -259,13 +259,13 @@ async function loadForEdit(id) {
 $("cancel-edit").addEventListener("click", () => location.assign("letters.html"));
 $("publish-letter").addEventListener("click", async () => {
   const letter = currentLetter();
-  if (!letter.title) { $("title").focus(); return toast("Give your letter a title first ✏️"); }
+  if (!letter.title) { $("title").focus(); return toast("Give your letter a title first."); }
   const button = $("publish-letter");
   button.disabled = true;
   try {
     const shared = await createSharedPost("letter", letter.title, letter);
     renderShareResult($("share-out"), shared);
-    toast("Your letter is published on the Memory Wall 💌");
+    toast("Your letter is published on the Memory Wall.");
   } catch (error) {
     console.error("Could not publish the letter.", error);
     toast("Publishing failed: " + error.message);
@@ -280,7 +280,7 @@ form.addEventListener("submit", async (e) => {
   if (!supabase) return toast(notConnectedMessage());
   if (!user) return toast("Only the site owner can save letters, but your preview is lovely");
   const letter = currentLetter();
-  if (!letter.title) { $("title").focus(); return toast("Give your letter a title first ✏️"); }
+  if (!letter.title) { $("title").focus(); return toast("Give your letter a title first."); }
   $("save-btn").disabled = true;
   const q = editId
     ? supabase.from("letters").update(letter).eq("id", editId).select().single()

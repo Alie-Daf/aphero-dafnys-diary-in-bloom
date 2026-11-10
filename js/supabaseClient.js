@@ -27,8 +27,8 @@ export { supabase };
 
 export function notConnectedMessage() {
   return reason === "offline"
-    ? "Looks like the internet is taking a nap 😴 Check your connection and refresh."
-    : "This room isn't connected to its database yet 🌱 (Set up js/config.js — see docs/PHASES.md, Phase 2.)";
+    ? "The database couldn't be reached. Check your connection and refresh."
+    : "This room isn't connected to its database yet. Set up js/config.js — see docs/PHASES.md, Phase 2.";
 }
 
 // Upload a file/blob to a PUBLIC bucket and return its public URL.

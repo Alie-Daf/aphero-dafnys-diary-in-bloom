@@ -17,7 +17,7 @@ async function main() {
     supabase.from("creations").select("*").order("created_at", { ascending: false }),
     supabase.from("shared_posts").select("slug,kind,title,created_at").order("created_at", { ascending: false }).limit(100),
   ]);
-  if (mem.error || cre.error) { $("mem-status").textContent = "Couldn't load memories right now. Check your internet 💭"; return; }
+  if (mem.error || cre.error) { $("mem-status").textContent = "Couldn't load memories right now. Check your internet connection."; return; }
   renderTimeline(mem.data);
   creations = cre.data;
   renderCreations(activeFilter);
@@ -106,7 +106,7 @@ function renderCreations(filter) {
   $("cre-grid").innerHTML = list.length ? list.map(c => `
     <figure class="polaroid">
       <img src="${escapeHtml(c.image_url)}" alt="${c.type === "bouquet" ? "A bouquet" : "A photo strip"} made on ${formatDate(c.created_at)}" loading="lazy">
-      <figcaption>${c.type === "bouquet" ? "💐" : "📸"} ${formatDate(c.created_at)}</figcaption>
+      <figcaption>${formatDate(c.created_at)}</figcaption>
     </figure>`).join("") : `<p class="hint">Nothing here yet. Make a bouquet or a photo strip!</p>`;
 }
 

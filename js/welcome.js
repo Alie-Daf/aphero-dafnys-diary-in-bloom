@@ -4,13 +4,13 @@
 import { PASSED_KEY, addPetals } from "./utils.js";
 import { fillIcons } from "./icons.js";
 
-// ✏️ Change these to your own question's answers (lowercase).
+// Change these to your own question's answers (lowercase).
 const ANSWERS = ["september 11", "sept 11", "09/11", "9/11", "11"];
 const WRONG_MESSAGES = [
-  "Hmm, not quite, my love 🥺 try again!",
-  "So close! Think back to our first day 💭",
-  "Nope! But I still love you 💗",
-  "Hint: it's the day everything started 🌸",
+  "Not quite. Try again.",
+  "Close. Think back to our first day.",
+  "That's not it. Try once more.",
+  "Hint: it's the day everything started.",
 ];
 let tries = 0;
 
@@ -28,7 +28,7 @@ form.addEventListener("submit", (e) => {
   e.preventDefault(); // stop the browser from reloading the page
   if (ANSWERS.includes(clean(input.value))) {
     msg.classList.remove("is-wrong");
-    msg.textContent = "Yay! Welcome home, Dafny 💗";
+    msg.textContent = "Welcome home, Dafny.";
     try { localStorage.setItem(PASSED_KEY, "yes"); } catch { /* private mode: fine */ }
     setTimeout(() => location.assign("../index.html"), 900);
   } else {

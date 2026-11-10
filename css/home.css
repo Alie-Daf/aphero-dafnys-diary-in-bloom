@@ -1,7 +1,6 @@
 /* home.css: styles only the home page uses. */
 .hero { position: relative; z-index: 1; margin-top: var(--space-3); }
 .hero h1 { margin-bottom: var(--space-2); }
-.hero .eyebrow::before { content: "♥ "; }
 .hero__sub { font-size: 1.05rem; color: var(--brown-soft); max-width: 18rem; }
 /* A painted sprig in the corner (filled in by home.js) */
 .hero__sprig { position: absolute; right: 0; top: -8px; width: 92px; opacity: .95; }

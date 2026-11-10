@@ -85,8 +85,8 @@ function camError(msg) { $("cam-error").textContent = msg; $("cam-error").hidden
 
 async function startCamera() {
   $("cam-error").hidden = true;
-  if (!window.isSecureContext) return camError("The camera only works on https:// or localhost. You can still upload photos below 💗");
-  if (!navigator.mediaDevices?.getUserMedia) return camError("This browser can't use the camera. Try Chrome or Safari, or upload photos below 💗");
+  if (!window.isSecureContext) return camError("The camera only works on https:// or localhost. You can still upload photos below.");
+  if (!navigator.mediaDevices?.getUserMedia) return camError("This browser can't use the camera. Try Chrome or Safari, or upload photos below.");
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 960 } }, audio: false });
     video.srcObject = stream;
@@ -96,12 +96,12 @@ async function startCamera() {
     $("start-cam").textContent = "Turn off camera";
   } catch (err) {
     const msgs = {
-      NotAllowedError: "Camera permission was blocked 🙈 Tap the lock icon in the address bar to allow it, or upload photos below.",
-      NotFoundError: "I couldn't find a camera on this device. You can upload photos below instead 📷",
-      NotReadableError: "The camera is busy in another app. Close it and try again 💭",
+      NotAllowedError: "Camera permission was blocked. Tap the lock icon in the address bar to allow it, or upload photos below.",
+      NotFoundError: "No camera was found on this device. You can upload photos below instead.",
+      NotReadableError: "The camera is busy in another app. Close it and try again.",
       OverconstrainedError: "This camera doesn't support the settings I asked for. Try another device or upload photos.",
     };
-    camError(msgs[err.name] || "Something went wrong with the camera 🥺 You can upload photos instead.");
+    camError(msgs[err.name] || "Something went wrong with the camera. You can upload photos instead.");
   }
 }
 function stopCamera() {
@@ -159,7 +159,7 @@ $("snap").addEventListener("click", async () => {
       $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go");
       shots.push(grab(video, video.videoWidth, video.videoHeight, true));
       renderShotSlots();
-      toast(`Shot ${i + 1} of ${n} 📸`);
+      toast(`Shot ${i + 1} of ${n}`);
       await sleep(600);
     }
     drawStrip();
@@ -289,7 +289,7 @@ $("share-strip").addEventListener("click", async () => {
     const title = $("caption").value.trim() || "A shared photo strip";
     const shared = await createSharedPost("photostrip", title, { image });
     renderShareResult($("strip-share-result"), shared);
-    toast("Your photo strip is published 📸");
+    toast("Your photo strip is published.");
   } catch (error) {
     console.error("Could not publish the photo strip.", error);
     toast("Publishing failed: " + error.message);

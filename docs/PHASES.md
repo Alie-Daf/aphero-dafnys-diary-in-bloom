@@ -76,7 +76,7 @@ Files: `sql/schema.sql`, `sql/guest-posts.sql`, `js/supabaseClient.js`, `js/auth
 
 **Test:** upload 3 files with tags, then search, filter and turn pages (arrows, buttons or swipe).
 **Errors:** "mime type not supported" means the file type isn't allowed by the bucket.
-**Challenge:** show a 🌟 on spines tagged "favorite".
+**Challenge:** show a star icon on spines tagged "favorite".
 
 ---
 ## Phase 6: Bouquet Builder

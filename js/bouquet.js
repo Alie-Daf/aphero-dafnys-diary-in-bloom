@@ -169,7 +169,7 @@ $("share-bouquet").addEventListener("click", async () => exportCanvas(async () =
     const title = $("card-msg").value.trim() || "A shared bouquet";
     const shared = await createSharedPost("bouquet", title, { image });
     renderShareResult($("bouquet-share-result"), shared);
-    toast("Your bouquet is published 💐");
+    toast("Your bouquet is published.");
   } catch (error) {
     console.error("Could not publish the bouquet.", error);
     toast("Publishing failed: " + error.message);
@@ -186,7 +186,7 @@ $("b-save").addEventListener("click", () => exportCanvas(async () => {
     const url = await uploadPublic("creations", await canvasToBlob(canvas), "png");
     const { error } = await supabase.from("creations").insert({ type: "bouquet", image_url: url });
     if (error) throw error;
-    toast("Your bouquet is on the Memory Wall 💐");
+    toast("Your bouquet is on the Memory Wall.");
   } catch (err) { toast("Saving failed. " + err.message); }
   $("b-save").disabled = false;
 }));

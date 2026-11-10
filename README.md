@@ -1,4 +1,4 @@
-# Dafny's Diary in Bloom 🌸
+# Dafny's Diary in Bloom
 
 A handmade, scrapbook-style monthsary gift for Dafny. We started on **September 11, 2026**,
 so every 11th is our monthsary. It's a cozy little world: one home page and six rooms.
@@ -38,7 +38,7 @@ The only outside library is the official `supabase-js` client, loaded from esm.s
 4. Wait 1–2 minutes. Your site will be at `https://YOUR-USERNAME.github.io/dafnys-diary/`.
 5. In Supabase → Authentication → URL Configuration, add that URL as the Site URL.
 
-## Privacy note ⚠️
+## Privacy note
 - Community posts and their images are public to anyone with the link and also appear on the Memory Wall. Links get forwarded, and screenshots can't be undone. Visitors do not need an account to post.
 - Each guest post includes a separate private manage link containing a secret token. Keep it private; anyone who has it can delete that post. A copy is also stored in that browser's local storage.
 - Guest posts are limited to five per IP per hour. This is a basic anti-spam limit, not a substitute for moderation; review reports in the Admin Corner.
@@ -49,6 +49,6 @@ The only outside library is the official `supabase-js` client, loaded from esm.s
 
 ## Credits
 - Fonts: Caveat, Nunito, Indie Flower, Playfair Display and Cormorant Garamond (Google Fonts, Open Font License).
-- Emoji render with your device's system emoji font.
+- Interface icons are rendered as inline SVG.
 - Database and storage: Supabase.
-- Made with love by me, for Dafny 💗
+- Made with love by me, for Dafny.

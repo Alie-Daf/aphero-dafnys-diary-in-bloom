@@ -68,9 +68,11 @@ export function spotifyEmbedUrl(input) {
   return m ? `https://open.spotify.com/embed/${m[1]}/${m[2]}` : null;
 }
 
-export function spotifyIframe(url) {
-  return `<iframe title="Spotify player" src="${url}" width="100%" height="152" style="border:0;border-radius:12px"
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+export function spotifyIframe(url, autoplay = false) {
+  const src = new URL(url);
+  if (autoplay) src.searchParams.set("autoplay", "1");
+  return `<iframe title="Spotify player" src="${src.href}" width="100%" height="152" style="border:0;border-radius:12px"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="${autoplay ? "eager" : "lazy"}"></iframe>`;
 }
 
 // A small pop-up message at the bottom of the screen (read aloud by screen readers).

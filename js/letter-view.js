@@ -20,7 +20,6 @@ async function main() {
   document.title = `${letter.title} | Dafny's Diary in Bloom`;
   $("letter-slot").innerHTML = letterHtml(letter);
   const song = spotifyEmbedUrl(letter.song_url);          // re-validate before embedding
-  if (song) $("letter-song").innerHTML = spotifyIframe(song);
 
   status.hidden = true;
   // Paint the envelope and the wax seal with the colours chosen for this letter
@@ -35,7 +34,9 @@ async function main() {
 
   env.addEventListener("click", () => {
     const stage = $("stage");
+    if (song) $("letter-song").innerHTML = spotifyIframe(song, true);
     stage.classList.add("is-open");
+    if (song) $("envelope-hint").textContent = "Opening your letter and starting the song if your browser allows it…";
     // Wait for the flap + paper animation, then show the full letter.
     setTimeout(() => stage.classList.add("is-revealed"), prefersReducedMotion() ? 0 : 1300);
   }, { once: true });

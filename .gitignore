@@ -1,0 +1,6 @@
+# Your real keys live in js/config.js — never commit it.
+.env
+.DS_Store
+node_modules/
+# Keep personal photos OUT of the repo; upload them to Supabase instead.
+assets/private/

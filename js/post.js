@@ -49,13 +49,14 @@ function renderPost(row) {
       theme,
     });
     const song = spotifyEmbedUrl(payload.song_url);
-    if (song) $("shared-letter-song").innerHTML = spotifyIframe(song);
     $("shared-letter-seal").innerHTML = icon(SEAL_ICONS.includes(theme.sealIcon) ? theme.sealIcon : "heart");
     const envelope = $("shared-letter-envelope");
     envelope.hidden = false;
     $("shared-letter-hint").hidden = false;
     envelope.addEventListener("click", () => {
+      if (song) $("shared-letter-song").innerHTML = spotifyIframe(song, true);
       stage.classList.add("is-open");
+      if (song) $("shared-letter-hint").textContent = "Opening your letter and starting the song if your browser allows it…";
       setTimeout(() => stage.classList.add("is-revealed"), prefersReducedMotion() ? 0 : 1300);
     }, { once: true });
   } else {

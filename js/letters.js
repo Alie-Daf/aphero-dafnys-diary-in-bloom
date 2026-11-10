@@ -181,7 +181,7 @@ $("openwhen-grid").addEventListener("click", event => {
 async function loadLetters() {
   if (!supabase) { $("letters-status").textContent = notConnectedMessage(); renderOpenWhen([]); return; }
   const [lettersResult, postsResult] = await Promise.all([
-    supabase.from("letters").select("id,title,open_when,share_slug,created_at").order("created_at", { ascending: false }),
+    supabase.from("letters").select("id,title,body,open_when,share_slug,created_at").order("created_at", { ascending: false }),
     supabase.from("shared_posts").select("slug,title,payload,created_at")
       .eq("kind", "letter").order("created_at", { ascending: false }),
   ]);
@@ -190,23 +190,37 @@ async function loadLetters() {
   const sharedLetters = postsResult.error ? [] : postsResult.data.map(post => ({
     ...post,
     open_when: post.payload?.open_when || null,
+    body: typeof post.payload?.body === "string" ? post.payload.body : "",
     shared: true,
   }));
   if (postsResult.error) console.error("Could not load community letters.", postsResult.error);
+  const normalized = value => String(value || "").trim().replace(/\s+/g, " ").toLocaleLowerCase();
+  const letterKey = letter => JSON.stringify([
+    normalized(letter.title),
+    normalized(letter.body),
+    letter.open_when || "",
+  ]);
+  const seenLetters = new Set(data.map(letterKey));
+  const uniqueSharedLetters = sharedLetters.filter(letter => {
+    const key = letterKey(letter);
+    if (seenLetters.has(key)) return false;
+    seenLetters.add(key);
+    return true;
+  });
   lettersByMood = new Map(Object.keys(OPEN_WHEN).map(mood => [mood, [
     ...data.filter(letter => letter.open_when === mood).map(letter => ({
       ...letter,
       href: `letter-view.html?slug=${encodeURIComponent(letter.share_slug)}`,
     })),
-    ...sharedLetters.filter(letter => letter.open_when === mood).map(letter => ({
+    ...uniqueSharedLetters.filter(letter => letter.open_when === mood).map(letter => ({
       ...letter,
       href: `post.html?slug=${encodeURIComponent(letter.slug)}`,
     })),
   ].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))]));
-  renderOpenWhen(data, sharedLetters);
+  renderOpenWhen(data, uniqueSharedLetters);
   const regular = [
     ...data.filter(l => !l.open_when).map(l => ({ ...l, href: `letter-view.html?slug=${encodeURIComponent(l.share_slug)}` })),
-    ...sharedLetters.filter(l => !l.open_when).map(l => ({ ...l, href: `post.html?slug=${encodeURIComponent(l.slug)}` })),
+    ...uniqueSharedLetters.filter(l => !l.open_when).map(l => ({ ...l, href: `post.html?slug=${encodeURIComponent(l.slug)}` })),
   ];
   $("letters-status").textContent = regular.length ? "" : "No letters yet… one is on its way";
   $("letter-list").innerHTML = renderLetterList(regular);

@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="../css/variables.css">
   <link rel="stylesheet" href="../css/base.css?v=2">
   <link rel="stylesheet" href="../css/components.css?v=6">
-  <link rel="stylesheet" href="../css/memories.css">
+  <link rel="stylesheet" href="../css/memories.css?v=2">
   <script type="module" src="../js/memories.js"></script>
 </head>
 <body>
@@ -22,17 +22,6 @@
     <h1 class="page-title">Memory Wall</h1>
     <p class="page-sub">Every month, a little page of us.</p>
     <p class="hint" id="mem-status" role="status" style="text-align:center">Loading memories…</p>
-    <section class="card community-submit" aria-labelledby="share-memory-title">
-      <h2 id="share-memory-title">Share a memory</h2>
-      <p class="hint">Anyone can view your post and share its link. Avoid private information and only upload photos you have permission to share.</p>
-      <form id="memory-post-form">
-        <div class="field"><label for="memory-post-title">Title</label><input class="input" id="memory-post-title" maxlength="120" required></div>
-        <div class="field"><label for="memory-post-body">Your memory</label><textarea class="input" id="memory-post-body" maxlength="5000" rows="4" placeholder="Write a little about this moment"></textarea></div>
-        <div class="field"><label for="memory-post-image">Photo (optional)</label><input class="input" id="memory-post-image" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></div>
-        <button class="btn btn--sage" type="submit">Publish memory</button>
-      </form>
-      <div class="share-result" id="memory-share-result" role="status" aria-live="polite"></div>
-    </section>
     <div class="timeline" id="timeline"></div>
     <section aria-labelledby="cre-title">
       <h2 id="cre-title">Bouquets &amp; photo strips</h2>
@@ -41,6 +30,7 @@
         <button class="btn btn--small btn--ghost" data-f="bouquet" aria-pressed="false">Bouquets</button>
         <button class="btn btn--small btn--ghost" data-f="photostrip" aria-pressed="false">Photo strips</button>
       </div>
+      <p class="hint">Filters apply to both saved creations and community posts.</p>
       <div class="cre-grid" id="cre-grid"></div>
     </section>
     <section aria-labelledby="community-title">
@@ -49,6 +39,17 @@
       <p class="hint" id="community-status" role="status"></p>
       <div class="community-grid" id="community-grid"></div>
     </section>
+    <details class="card community-submit">
+      <summary id="share-memory-title">Share a memory</summary>
+      <p class="hint">Anyone can view your post and share its link. Avoid private information and only upload photos you have permission to share.</p>
+      <form id="memory-post-form">
+        <div class="field"><label for="memory-post-title">Title</label><input class="input" id="memory-post-title" maxlength="120" required></div>
+        <div class="field"><label for="memory-post-body">Your memory</label><textarea class="input" id="memory-post-body" maxlength="5000" rows="4" placeholder="Write a little about this moment"></textarea></div>
+        <div class="field"><label for="memory-post-image">Photo (optional)</label><input class="input" id="memory-post-image" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></div>
+        <button class="btn btn--sage" type="submit">Publish memory</button>
+      </form>
+      <div class="share-result" id="memory-share-result" role="status" aria-live="polite"></div>
+    </details>
   </main>
 </body>
 </html>

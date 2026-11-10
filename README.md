@@ -12,8 +12,8 @@ so every 11th is our monthsary. It's a cozy little world: one home page and six 
 - **Letter Room**: a letter-browsing screen with "Open when…" shelves and a separate four-step composer. Anyone can publish letters; "Open when…" letters appear on their matching shelf and have a public share link.
 - **Photobooth**: choose a 2-, 3-, 4- or 6-photo layout, capture with the webcam or upload images, then style and publish a shareable photo strip.
 - **Bouquet Builder**: drag, resize, rotate and delete flowers, choose a wrapper and ribbon, add a card, download or publish a shareable bouquet.
-- **Memory Wall**: a month-by-month timeline plus a public community feed. Visitors can publish a memory, letter, bouquet, photo strip, or library post.
-- **Library**: a bookshelf with search, tag and date filters, a page-turning reader, and a form for publishing community writing.
+- **Memory Wall**: a month-by-month timeline plus a public community feed. Bouquet and photo-strip filters apply to both saved creations and matching community posts. Visitors can publish a memory, letter, bouquet, photo strip, or library post.
+- **Library**: curated books and public community writing share a searchable bookshelf with tag and date filters and an inline page-turning reader.
 - **Admin page** (`pages/admin.html`, not linked anywhere): owner-only login to manage curated content and review reports on public posts.
 
 ## Tech

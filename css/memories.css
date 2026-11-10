@@ -26,6 +26,11 @@
 .community-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--space-3); margin: var(--space-3) 0 var(--space-5); }
 .community-card { display: flex; flex-direction: column; gap: var(--space-1); min-height: 112px; padding: var(--space-3); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--white); box-shadow: var(--shadow-soft); text-decoration: none; overflow-wrap: anywhere; }
 .community-card span { color: var(--brown-soft); font-size: .85rem; }
+.community-submit { margin: var(--space-4) 0; }
+.community-submit > summary { cursor: pointer; min-height: var(--tap); display: flex; align-items: center; font-weight: 700; }
+.community-submit > summary::after { content: "+"; margin-left: auto; font-size: 1.5rem; color: var(--rose); }
+.community-submit[open] > summary::after { content: "−"; }
+.community-submit > summary::-webkit-details-marker { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .memory-card__inner { transition: none; }

@@ -6,6 +6,9 @@ import { createSharedPost, imageDataUrl, postUrl, renderShareResult, POST_KINDS 
 
 const $ = (id) => document.getElementById(id);
 let creations = [];
+let communityPosts = [];
+let activeFilter = "all";
+let communityUnavailable = false;
 
 async function main() {
   if (!supabase) { $("mem-status").textContent = notConnectedMessage(); return; }
@@ -16,12 +19,14 @@ async function main() {
   ]);
   if (mem.error || cre.error) { $("mem-status").textContent = "Couldn't load memories right now. Check your internet 💭"; return; }
   renderTimeline(mem.data);
-  creations = cre.data; renderCreations("all");
+  creations = cre.data;
+  renderCreations(activeFilter);
   if (shared.error) {
     console.error("Could not load community creations.", shared.error);
-    $("community-status").textContent = "Community posts need the guest-post database setup.";
+    communityUnavailable = true;
+    renderCommunity([], activeFilter);
   } else {
-    renderCommunity(shared.data);
+    renderCommunity(shared.data, activeFilter);
   }
 }
 
@@ -42,7 +47,7 @@ $("memory-post-form").addEventListener("submit", async event => {
     const { data, error } = await supabase.from("shared_posts")
       .select("slug,kind,title,created_at").eq("slug", shared.slug).single();
     if (error) throw error;
-    renderCommunity([data, ...communityPosts.filter(post => post.slug !== data.slug)]);
+    renderCommunity([data, ...communityPosts.filter(post => post.slug !== data.slug)], activeFilter);
   } catch (error) {
     console.error("Could not publish the memory.", error);
     toast("Publishing failed: " + error.message);
@@ -105,13 +110,21 @@ function renderCreations(filter) {
     </figure>`).join("") : `<p class="hint">Nothing here yet. Make a bouquet or a photo strip!</p>`;
 }
 
-let communityPosts = [];
-function renderCommunity(posts) {
+function renderCommunity(posts, filter) {
   communityPosts = posts;
   const grid = $("community-grid");
   grid.replaceChildren();
-  $("community-status").textContent = posts.length ? `${posts.length} recent public post${posts.length === 1 ? "" : "s"}` : "No community posts yet. Share a memory, letter, bouquet or photo strip!";
-  posts.forEach(post => {
+  if (communityUnavailable) {
+    $("community-status").textContent = "Community posts couldn't be loaded. Please try again later.";
+    return;
+  }
+  const visiblePosts = posts.filter(post => filter === "all" || post.kind === filter);
+  const kindLabel = filter === "bouquet" ? "bouquet" : "photo strip";
+  $("community-status").textContent = filter === "all"
+    ? visiblePosts.length ? `${visiblePosts.length} recent public post${visiblePosts.length === 1 ? "" : "s"}` : "No community posts yet. Share a memory, letter, bouquet or photo strip!"
+    : visiblePosts.length ? `${visiblePosts.length} recent public ${kindLabel}${visiblePosts.length === 1 ? "" : "s"}`
+      : `No public ${kindLabel}s yet.`;
+  visiblePosts.forEach(post => {
     const link = document.createElement("a");
     link.className = "community-card";
     link.href = postUrl(post.slug);
@@ -129,7 +142,9 @@ $("cre-filter").addEventListener("click", (e) => {
   document.querySelectorAll("#cre-filter button").forEach(x => {
     const on = x === b; x.setAttribute("aria-pressed", String(on)); x.classList.toggle("btn--ghost", !on);
   });
-  renderCreations(b.dataset.f);
+  activeFilter = b.dataset.f;
+  renderCreations(activeFilter);
+  renderCommunity(communityPosts, activeFilter);
 });
 
 main();

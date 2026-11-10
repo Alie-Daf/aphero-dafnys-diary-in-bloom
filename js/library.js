@@ -3,20 +3,60 @@
 import "./nav.js";
 import { supabase, notConnectedMessage } from "./supabaseClient.js";
 import { escapeHtml, formatDate, prefersReducedMotion, toast } from "./utils.js";
-import { createSharedPost, imageDataUrl, renderShareResult } from "./sharing.js";
+import { createSharedPost, imageDataUrl, renderShareResult, safeImageUrl } from "./sharing.js";
 
 const $ = (id) => document.getElementById(id);
 const COLORS = ["#F8D7DA", "#B7C9A8", "#E3C9A8", "#FFF8F0", "#E8A9B0", "#E3ECDB"];
 let items = [];
+let communityUnavailable = false;
 
 async function main() {
   if (!supabase) { $("lib-status").textContent = notConnectedMessage(); return; }
-  const { data, error } = await supabase.from("library_items").select("*").order("written_on", { ascending: false, nullsFirst: false });
-  if (error) { $("lib-status").textContent = "The library door is stuck 🥺 Check your internet and refresh."; return; }
-  items = data;
-  const tags = [...new Set(items.flatMap(i => i.tags))].sort();
-  $("tag").innerHTML += tags.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join("");
+  const [curated, shared] = await Promise.all([
+    supabase.from("library_items").select("*").order("written_on", { ascending: false, nullsFirst: false }),
+    supabase.from("shared_posts").select("slug,title,payload,created_at")
+      .eq("kind", "library").order("created_at", { ascending: false }),
+  ]);
+  if (curated.error) {
+    $("lib-status").textContent = "The library couldn't load. Check your internet and try again.";
+    console.error("Could not load library books.", curated.error);
+    return;
+  }
+  items = curated.data.map(item => ({
+    ...item,
+    tags: Array.isArray(item.tags) ? item.tags.filter(tag => typeof tag === "string") : [],
+    shared: false,
+  }));
+  if (shared.error) {
+    communityUnavailable = true;
+    console.error("Could not load community library books.", shared.error);
+  } else {
+    items.push(...shared.data.map(communityBook));
+  }
+  updateTagOptions();
   render();
+}
+
+function communityBook(post) {
+  const payload = post.payload && typeof post.payload === "object" && !Array.isArray(post.payload) ? post.payload : {};
+  const image = safeImageUrl(payload.image);
+  return {
+    id: `community-${post.slug}`,
+    slug: post.slug,
+    title: post.title,
+    content: typeof payload.body === "string" ? payload.body : "",
+    tags: Array.isArray(payload.tags) ? payload.tags.filter(tag => typeof tag === "string") : [],
+    written_on: typeof post.created_at === "string" ? post.created_at.slice(0, 10) : null,
+    type: image ? "image" : "text",
+    file_url: image,
+    shared: true,
+  };
+}
+
+function updateTagOptions() {
+  const tags = [...new Set(items.flatMap(item => item.tags))].sort((a, b) => a.localeCompare(b));
+  $("tag").innerHTML = `<option value="">All tags</option>${tags.map(tag =>
+    `<option value="${escapeHtml(tag)}">${escapeHtml(tag)}</option>`).join("")}`;
 }
 
 // A stable "random" number from text, so each book keeps the same colour/height.
@@ -34,15 +74,19 @@ function filtered() {
 
 function render() {
   const list = filtered();
-  $("lib-status").textContent = items.length === 0 ? "The shelves are empty for now… new books coming soon"
-    : list.length === 0 ? "No books match that search 🔍" : `${list.length} book${list.length === 1 ? "" : "s"} on the shelf`;
+  const message = items.length === 0 ? "The shelves are empty for now… new books coming soon"
+    : list.length === 0 ? "No books match those filters" : `${list.length} book${list.length === 1 ? "" : "s"} on the shelf`;
+  $("lib-status").textContent = communityUnavailable ? `${message}. Community books couldn't be loaded.` : message;
   $("shelf").innerHTML = list.map(i => {
     const h = hash(i.id);
-    return `<button class="spine" data-id="${i.id}" style="--c:${COLORS[h % COLORS.length]};--h:${160 + (h % 50)}px"
+    return `<button class="spine" data-id="${escapeHtml(String(i.id))}" style="--c:${COLORS[h % COLORS.length]};--h:${160 + (h % 50)}px"
       aria-label="Open ${escapeHtml(i.title)}${i.written_on ? ", written " + formatDate(i.written_on) : ""}">${escapeHtml(i.title)}</button>`;
   }).join("");
 }
-["q", "tag", "from", "to"].forEach(id => $(id).addEventListener("input", render));
+["q", "tag", "from", "to"].forEach(id => {
+  $(id).addEventListener("input", render);
+  $(id).addEventListener("change", render);
+});
 
 // ---------- Book reader ----------
 const book = $("book");
@@ -71,16 +115,23 @@ function showPages(animate) {
   const el = $("book-pages");
   el.classList.toggle("is-spread", isSpread());
   const visible = pages.slice(pageIndex, pageIndex + step());
-  el.innerHTML = visible.map((p, k) => `<div class="page">${p}<span class="page__num">${pageIndex + k + 1}</span></div>`).join("");
-  $("page-count").textContent = `Page ${pageIndex + 1}${visible.length > 1 ? "–" + (pageIndex + 2) : ""} of ${pages.length}`;
-  $("prev").disabled = pageIndex === 0;
-  $("next").disabled = pageIndex + step() >= pages.length;
+  el.innerHTML = visible.length
+    ? visible.map((p, k) => `<div class="page">${p}<span class="page__num">${pageIndex + k + 1}</span></div>`).join("")
+    : `<div class="page reading-empty">Choose a book from the shelf to read it here.</div>`;
+  $("page-count").textContent = pages.length
+    ? `Page ${pageIndex + 1}${visible.length > 1 ? "–" + (pageIndex + 2) : ""} of ${pages.length}`
+    : "Choose a book";
+  $("prev").disabled = !pages.length || pageIndex === 0;
+  $("next").disabled = !pages.length || pageIndex + step() >= pages.length;
   if (animate && !prefersReducedMotion()) { el.classList.remove("turn"); void el.offsetWidth; el.classList.add("turn"); }
 }
 
 function openBook(item) {
+  if (!item) return;
   $("book-title").textContent = item.title;
-  const meta = `<em>${item.written_on ? "Written " + formatDate(item.written_on) : ""}${item.tags.length ? " · " + escapeHtml(item.tags.join(", ")) : ""}</em>`;
+  $("book-close").hidden = false;
+  const tags = Array.isArray(item.tags) ? item.tags : [];
+  const meta = `<em>${item.written_on ? "Written " + formatDate(item.written_on) : ""}${tags.length ? " · " + escapeHtml(tags.join(", ")) : ""}</em>`;
   if (item.type === "image") {
     pages = [`<img src="${escapeHtml(item.file_url)}" alt="${escapeHtml(item.title)}">`];
     if (item.content) pages.push(escapeHtml(item.content));
@@ -90,7 +141,7 @@ function openBook(item) {
     pages[0] = meta + "\n\n" + pages[0];
   }
   pageIndex = 0;
-  book.showModal();          // <dialog> handles focus trapping and Escape for us
+  book.scrollIntoView({ behavior: "smooth", block: "start" });
   showPages(false);
 }
 function turn(dir) {
@@ -105,14 +156,26 @@ $("shelf").addEventListener("click", (e) => {
 });
 $("prev").addEventListener("click", () => turn(-1));
 $("next").addEventListener("click", () => turn(1));
-$("book-close").addEventListener("click", () => book.close());
+$("book-close").addEventListener("click", () => {
+  pages = [];
+  pageIndex = 0;
+  $("book-title").textContent = "Choose a book from the shelf";
+  $("book-close").hidden = true;
+  showPages(false);
+});
 book.addEventListener("keydown", (e) => { if (e.key === "ArrowRight") turn(1); if (e.key === "ArrowLeft") turn(-1); });
 // Swipe to turn pages on phones
 let sx = null;
 $("book-pages").addEventListener("pointerdown", (e) => (sx = e.clientX));
 $("book-pages").addEventListener("pointerup", (e) => { if (sx !== null && Math.abs(e.clientX - sx) > 50) turn(e.clientX < sx ? 1 : -1); sx = null; });
-window.addEventListener("resize", () => { if (book.open) { pageIndex -= pageIndex % step(); showPages(false); } });
+window.addEventListener("resize", () => {
+  if (pages.length) {
+    pageIndex -= pageIndex % step();
+    showPages(false);
+  }
+});
 
+showPages(false);
 main();
 
 $("library-post-form").addEventListener("submit", async event => {
@@ -123,13 +186,18 @@ $("library-post-form").addEventListener("submit", async event => {
     const file = $("library-post-image").files[0];
     const body = $("library-post-body").value.trim();
     if (!body && !file) throw new Error("Add some writing or choose an image first.");
+    const title = $("library-post-title").value.trim();
     const tags = $("library-post-tags").value.split(",").map(tag => tag.trim()).filter(Boolean).slice(0, 10);
     const payload = {
       body,
       tags,
       image: file ? await imageDataUrl(file) : null,
     };
-    const shared = await createSharedPost("library", $("library-post-title").value.trim(), payload);
+    const shared = await createSharedPost("library", title, payload);
+    items.unshift(communityBook({ slug: shared.slug, title, payload, created_at: new Date().toISOString() }));
+    communityUnavailable = false;
+    updateTagOptions();
+    render();
     renderShareResult($("library-share-result"), shared);
     event.target.reset();
     toast("Your post is now public");

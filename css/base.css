@@ -1,0 +1,37 @@
+/* base.css: resets and global element styles. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: var(--font-body);
+  color: var(--brown);
+  line-height: 1.6;
+  min-height: 100vh;
+  /* Paper dots drawn with gradients, so no image file is needed */
+  background-color: var(--cream);
+  background-image: radial-gradient(rgba(74,51,40,.07) 1px, transparent 1px);
+  background-size: 18px 18px;
+  /* Leave room for the tab bar on phones */
+  padding-bottom: calc(var(--tabbar) + env(safe-area-inset-bottom, 0px));
+}
+@media (min-width: 820px) { body { padding-bottom: 0; } }
+
+h1, h2, h3 { margin: 0 0 var(--space-3); line-height: 1.1; }
+h1 { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: clamp(2.6rem, 10vw, 4.4rem); }
+h2 { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: clamp(1.8rem, 5.5vw, 2.4rem); }
+h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; }
+p { margin: 0 0 var(--space-3); }
+img, svg { max-width: 100%; }
+a { color: var(--brown); }
+:focus-visible { outline: 3px solid var(--sage-deep); outline-offset: 3px; border-radius: 6px; }
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+main { max-width: 960px; margin: 0 auto; padding: var(--space-4) var(--space-3) var(--space-6); }
+
+.fade-in { animation: fadeIn var(--dur) var(--ease) both; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* Respect people who ask for less motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

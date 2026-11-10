@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Asks search engines not to list this page. A request, not protection. -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>Photobooth | Dafny’s Diary in Bloom</title>
+  <meta name="description" content="A cute photobooth for Dafny.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Indie+Flower&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css?v=2">
+  <link rel="stylesheet" href="../css/components.css?v=6">
+  <link rel="stylesheet" href="../css/photobooth.css?v=5">
+  <script type="module" src="../js/photobooth.js?v=4"></script>
+</head>
+<body>
+  <main class="fade-in">
+    <section id="capture-stage">
+      <p class="eyebrow page-title">Photobooth</p>
+      <h1 class="page-title">Strike a pose</h1>
+      <p class="page-sub">Pick a layout, then take your shots.</p>
+      <div class="layouts" id="layouts" role="group" aria-label="Photo strip layout">
+        <button type="button" class="layout" data-n="4" aria-pressed="true">Strip<small>4 poses</small></button>
+        <button type="button" class="layout" data-n="3" aria-pressed="false">Trio<small>3 poses</small></button>
+        <button type="button" class="layout" data-n="2" aria-pressed="false">Duo<small>2 poses</small></button>
+        <button type="button" class="layout" data-n="6" aria-pressed="false">Grid<small>6 poses</small></button>
+      </div>
+      <select id="shots" hidden><option value="2">2</option><option value="3">3</option><option value="4" selected>4</option><option value="6">6</option></select>
+
+      <section class="card booth" aria-label="Camera">
+        <span class="booth-bow" aria-hidden="true"></span>
+        <div class="mode-tabs" role="group" aria-label="Choose camera or upload">
+          <button type="button" class="mode-tab" id="camera-mode" aria-pressed="true">Camera</button>
+          <button type="button" class="mode-tab" id="upload-mode" aria-pressed="false">Upload images</button>
+        </div>
+        <div id="camera-panel">
+          <div class="viewfinder">
+            <video id="video" playsinline muted aria-label="Camera preview"></video>
+            <div class="viewfinder__idle" id="idle"><span data-icon="camera_off"></span><p>Camera is off</p></div>
+            <div class="countdown" id="countdown" aria-live="assertive"></div>
+            <div class="flash" id="flash" aria-hidden="true"></div>
+          </div>
+          <p class="notice notice--warn" id="cam-error" role="alert" hidden></p>
+          <div class="capture-controls">
+            <label class="delay-control" for="delay">Countdown
+              <select id="delay" aria-label="Countdown delay">
+                <option value="3" selected>3 seconds</option>
+                <option value="5">5 seconds</option>
+                <option value="10">10 seconds</option>
+              </select>
+            </label>
+            <button class="btn btn--dark" id="snap" disabled>Start capture (4 photos)</button>
+          </div>
+          <button class="btn btn--ghost camera-toggle" id="start-cam" type="button">Turn on camera</button>
+        </div>
+        <div class="upload-panel" id="upload-panel" hidden>
+          <label class="btn btn--ghost upload-button" for="upload">Choose images
+            <input class="sr-only" type="file" id="upload" accept="image/jpeg,image/png,image/webp,image/gif" multiple>
+          </label>
+        </div>
+      </section>
+
+      <section class="capture-filters" aria-labelledby="filter-title">
+        <h2 id="filter-title">Filter</h2>
+        <div class="row filter-choices" id="filters" role="group" aria-label="Photo filters"></div>
+        <select id="filter" hidden>
+          <option value="none">No filter</option><option value="bw">Black and white</option><option value="sepia">Sepia</option>
+          <option value="vintage">Vintage</option><option value="soft">Soft</option><option value="vivid">Vivid</option>
+        </select>
+      </section>
+      <section class="shot-preview" aria-labelledby="shots-title">
+        <h2 id="shots-title">Your shots</h2>
+        <div class="shot-slots" id="shot-slots"></div>
+      </section>
+    </section>
+
+    <section id="edit-stage" hidden>
+      <p class="eyebrow page-title">Photobooth</p>
+      <h1 class="page-title">Your photo strip</h1>
+      <p class="page-sub">Choose a frame and stickers, then save it.</p>
+      <section class="card strip-editor" aria-label="Style your strip">
+        <div class="strip-wrap" id="strip-wrap" hidden>
+          <div class="strip-preview"><canvas id="strip" aria-label="Your photo strip"></canvas></div>
+          <h2>Frame colour</h2>
+          <div class="row frame-choices" id="frame-choices" role="group" aria-label="Frame colour"></div>
+          <h2>Stickers</h2>
+          <div class="row sticker-choices" id="pb-stickers" role="group" aria-label="Sticker style"></div>
+          <div class="field"><label for="caption">Caption</label><input class="input" id="caption" maxlength="40" value="Dafny’s Diary in Bloom"></div>
+          <div class="row">
+            <button class="btn" id="download">Download strip</button>
+            <button class="btn btn--sage" id="share-strip" type="button">Publish + share</button>
+            <button class="btn btn--sage" id="save" hidden>Save to Memory Wall</button>
+            <button class="btn btn--ghost" id="retake">Take new photos</button>
+          </div>
+          <div class="share-result" id="strip-share-result" role="status" aria-live="polite"></div>
+          <p class="hint" id="save-hint">Published strips are public and appear on the Memory Wall.</p>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

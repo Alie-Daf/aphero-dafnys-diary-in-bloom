@@ -1,0 +1,38 @@
+/* variables.css: the design system. Change a value here and the whole site updates. */
+:root {
+  /* Colours (same names as before, so older pages keep working) */
+  --blush: #F8D7DA;
+  --blush-deep: #E58A9A;
+  --rose: #9C4552;          /* small labels and accents (good contrast) */
+  --cream: #FFF8F0;
+  --sage: #B7C9A8;
+  --sage-deep: #6F8A5E;
+  --brown: #4A3328;         /* main text */
+  --brown-soft: #7A5C4E;
+  --white: #FFFFFF;
+  --tape: rgba(183, 201, 168, 0.8);
+  --tape-pink: rgba(244, 184, 191, 0.85);
+
+  /* Fonts */
+  --font-display: "Cormorant Garamond", Georgia, serif;   /* big titles */
+  --font-heading: "Caveat", cursive;                      /* small handwritten touches */
+  --font-body: "Nunito", system-ui, sans-serif;
+
+  /* Spacing (4px rhythm) */
+  --space-1: .25rem; --space-2: .5rem; --space-3: 1rem;
+  --space-4: 1.5rem; --space-5: 2rem; --space-6: 3rem;
+
+  /* Shape and depth: soft, painted shadows */
+  --radius-sm: 12px; --radius: 18px; --radius-lg: 26px;
+  --shadow-soft: 0 1px 2px rgba(74,51,40,.06), 0 10px 24px rgba(74,51,40,.08);
+  --shadow-lift: 0 14px 32px rgba(74,51,40,.16);
+
+  --tap: 44px;              /* smallest tap target */
+  --tabbar: 68px;           /* height of the phone tab bar */
+  --ease: cubic-bezier(.25,.8,.35,1);
+  --dur: 400ms;
+
+  /* Extra paper tones used by letters, polaroids and the library */
+  --kraft: #E3C9A8; --sage-light: #E6EEDF; --line: #EBD5CF;
+  --ink-dark: #2B2321; --wood: #A47551; --wood-dark: #7B5236; --danger: #B3261E;
+}

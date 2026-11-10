@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Asks search engines not to list this page. A request, not protection. -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>Letter Room 💌 | Dafny's Diary in Bloom</title>
+  <meta name="description" content="Letters written for Dafny.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Indie+Flower&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css?v=2">
+  <link rel="stylesheet" href="../css/components.css?v=6">
+  <link rel="stylesheet" href="../css/letters.css?v=2">
+  <script type="module" src="../js/letters.js"></script>
+</head>
+<body>
+  <main class="fade-in">
+    <p class="eyebrow page-title">Letter Room</p>
+    <h1 class="page-title" id="letter-page-title">Notes for you</h1>
+    <p class="page-sub" id="letter-page-sub">Little letters, sealed with love. Tap an envelope to open it.</p>
+
+    <section class="composer" id="composer" hidden>
+      <button class="btn btn--ghost letter-return" type="button" id="back-to-letters">← Back to letters</button>
+      <p class="hint composer-note" id="composer-note">Publish a public letter and share its link without signing in.</p>
+      <form id="letter-form" novalidate>
+        <nav class="letter-steps" aria-label="Letter steps">
+          <button type="button" class="letter-step" data-step="1" aria-current="step"><span>1</span>Paper</button>
+          <button type="button" class="letter-step" data-step="2"><span>2</span>Write</button>
+          <button type="button" class="letter-step" data-step="3"><span>3</span>Envelope</button>
+          <button type="button" class="letter-step" data-step="4"><span>4</span>Send</button>
+        </nav>
+        <input type="hidden" id="paper" value="cream">
+        <input type="hidden" id="font" value="caveat">
+        <input type="hidden" id="envelope" value="kraft">
+        <input type="hidden" id="seal" value="rose">
+        <input type="hidden" id="seal-icon" value="heart">
+
+        <section class="letter-step-panel" data-panel="1" aria-labelledby="paper-title">
+          <h3 class="sr-only" id="paper-title">Choose your paper</h3>
+          <p class="hint">Pick the page your words will live on.</p>
+          <fieldset class="field choice-field">
+            <legend>Paper style</legend>
+            <div class="paper-choices" id="paper-choices"></div>
+          </fieldset>
+          <div class="field"><label for="color">Ink colour</label><input class="input" type="color" id="color" value="#5A3E36"></div>
+          <div class="letter-step-actions"><span></span><button class="btn letter-next" type="button">Next: write</button></div>
+        </section>
+
+        <section class="letter-step-panel" data-panel="2" aria-labelledby="write-title" hidden>
+          <h3 class="sr-only" id="write-title">Write a letter</h3>
+          <div class="letter-writing-layout">
+            <div class="letter-writing-fields">
+              <div class="field"><label for="title">Card title</label><input class="input" id="title" maxlength="200" value="A little note for you" required></div>
+              <div class="row address-fields">
+                <div class="field"><label for="recipient">To</label><input class="input" id="recipient" maxlength="80" value="Dafny"></div>
+                <div class="field"><label for="sender">From (optional)</label><input class="input" id="sender" maxlength="80" placeholder="Your name"></div>
+              </div>
+              <div class="field"><label for="body">Your message</label><textarea class="input" id="body" rows="7" maxlength="20000" placeholder="Write what is in your heart"></textarea></div>
+              <fieldset class="field choice-field">
+                <legend>Handwriting</legend>
+                <div class="font-choices" id="font-choices"></div>
+              </fieldset>
+              <fieldset class="field sticker-set"><legend>Stickers (up to 6)</legend><div class="row" id="stickers"></div></fieldset>
+              <div class="field"><label for="song">Song (Spotify link)</label><input class="input" id="song" inputmode="url" placeholder="Paste a Spotify track link"></div>
+              <div class="field"><label for="openwhen">Open when…</label>
+                <select class="input" id="openwhen"><option value="">Anytime</option></select></div>
+            </div>
+            <aside class="letter-preview-wrap" aria-label="Live letter card preview">
+              <div id="preview-card" class="preview-card">
+                <div class="preview-card__inner">
+                  <article class="preview-card__face preview-card__front">
+                    <p class="preview-card__eyebrow">A letter for Dafny</p>
+                    <span class="preview-card__icon" aria-hidden="true"></span>
+                    <h3 class="preview-card__title">A little note for you</h3>
+                    <p>Tap to open and read</p>
+                  </article>
+                  <article class="preview-card__face preview-card__back" id="preview"></article>
+                </div>
+              </div>
+              <button type="button" class="btn btn--small preview-flip" id="preview-flip" aria-pressed="false">Flip card</button>
+              <div id="spotify-preview" class="spotify-box"></div>
+            </aside>
+          </div>
+          <div class="letter-step-actions"><button class="btn btn--ghost letter-back" type="button">← Back</button><button class="btn letter-next" type="button">Next: envelope and seal</button></div>
+        </section>
+
+        <section class="letter-step-panel" data-panel="3" aria-labelledby="envelope-title" hidden>
+          <h3 class="sr-only" id="envelope-title">Envelope and seal</h3>
+          <p class="hint">Pick the paper, press the wax, and she opens it herself.</p>
+          <div class="envelope-preview-card">
+            <span class="tape tape--pink" aria-hidden="true"></span>
+            <div class="envelope-art" id="envelope-art" aria-hidden="true"><span class="envelope-art__seal" id="seal-preview"></span></div>
+          </div>
+          <fieldset class="field choice-field">
+            <legend>Envelope paper</legend>
+            <div class="swatch-choices" id="envelope-choices"></div>
+          </fieldset>
+          <fieldset class="field choice-field">
+            <legend>Wax seal</legend>
+            <div class="seal-choices" id="seal-icon-choices"></div>
+          </fieldset>
+          <fieldset class="field choice-field">
+            <legend>Seal colour</legend>
+            <div class="swatch-choices" id="seal-color-choices"></div>
+          </fieldset>
+          <div class="letter-step-actions"><button class="btn btn--ghost letter-back" type="button">← Back</button><button class="btn letter-next" type="button">Review and send</button></div>
+        </section>
+
+        <section class="letter-step-panel" data-panel="4" aria-labelledby="send-title" hidden>
+          <h3 class="sr-only" id="send-title">Review and send</h3>
+          <p class="hint">One last look at your letter before it’s sealed.</p>
+          <div class="send-preview" id="send-preview"></div>
+          <div class="send-summary" id="send-summary"></div>
+          <div class="letter-step-actions">
+            <button class="btn btn--ghost letter-back" type="button">← Back</button>
+            <div class="row">
+              <button class="btn btn--sage" type="button" id="publish-letter">Publish + share</button>
+              <button class="btn" type="submit" id="save-btn" hidden>Save letter</button>
+              <button class="btn btn--ghost" type="button" id="cancel-edit" hidden style="display:none">Cancel edit</button>
+            </div>
+          </div>
+          <div class="share-result" id="share-out" role="status" aria-live="polite"></div>
+        </section>
+      </form>
+    </section>
+
+    <section id="openwhen-section" aria-labelledby="ow-title">
+      <h2 id="ow-title">Open when…</h2>
+      <div class="openwhen" id="openwhen-grid"></div>
+    </section>
+
+    <section id="all-letters-section" aria-labelledby="all-title">
+      <h2 id="all-title">All letters</h2>
+      <p class="hint" id="letters-status" role="status">Loading letters…</p>
+      <ul class="letter-list" id="letter-list"></ul>
+    </section>
+    <button class="btn btn--dark letter-start" type="button" id="start-letter">Write a letter</button>
+  </main>
+</body>
+</html>

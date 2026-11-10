@@ -1,0 +1,4 @@
+# Politely asks search engines not to crawl this site.
+# This is a REQUEST, not protection — anyone with the link can still visit.
+User-agent: *
+Disallow: /

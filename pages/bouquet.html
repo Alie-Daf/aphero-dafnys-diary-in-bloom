@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Asks search engines not to list this page. A request, not protection. -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>Bouquet Builder | Dafny’s Diary in Bloom</title>
+  <meta name="description" content="Build a bouquet of flowers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Indie+Flower&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css?v=2">
+  <link rel="stylesheet" href="../css/components.css?v=6">
+  <link rel="stylesheet" href="../css/bouquet.css">
+  <script type="module" src="../js/bouquet.js"></script>
+</head>
+<body>
+  <main class="fade-in">
+    <p class="eyebrow page-title">Bouquet</p>
+    <h1 class="page-title">Build a bouquet</h1>
+    <p class="page-sub">Tap a flower to add it, drag it into place, then tie it up with a ribbon.</p>
+
+    <div class="grid-2">
+      <!-- LEFT: the canvas where the bouquet lives -->
+      <section class="card">
+        <span class="tape tape--pink" aria-hidden="true"></span>
+        <canvas id="bouquet" width="600" height="750" tabindex="0"
+          aria-label="Bouquet canvas. Select a flower, then use arrow keys to move it and Delete to remove it."></canvas>
+        <p class="hint">Tip: tap a flower to select it. On a keyboard, arrow keys move it and Delete removes it.</p>
+      </section>
+
+      <!-- RIGHT: the tray of flowers and the controls -->
+      <section class="card">
+        <div class="row tray-tabs" role="group" aria-label="Kinds of flowers">
+          <button class="pill" type="button" data-kind="flower" aria-pressed="true">Flowers</button>
+          <button class="pill" type="button" data-kind="filler" aria-pressed="false">Fillers</button>
+        </div>
+        <div class="tray" id="tray" aria-label="Pick a flower to add"></div>
+
+        <h3>Selected flower</h3>
+        <div class="field"><label for="size">Size</label><input type="range" id="size" min="120" max="460" value="300" disabled></div>
+        <div class="field"><label for="rotate">Rotate</label><input type="range" id="rotate" min="-90" max="90" value="0" disabled></div>
+        <div class="row">
+          <button class="btn btn--small" id="front" disabled>Bring to front</button>
+          <button class="btn btn--small btn--danger" id="delete" disabled>Delete</button>
+          <button class="btn btn--small btn--ghost" id="clear">Clear all</button>
+        </div>
+
+        <div class="row bouquet-selects">
+          <div class="field"><label for="wrapper">Wrapper</label><select class="input" id="wrapper">
+            <option value="kraft">Kraft paper</option><option value="blush">Blush</option><option value="sage">Sage</option><option value="cream">Ivory</option><option value="none">No wrapper</option></select></div>
+          <div class="field"><label for="ribbon">Ribbon</label><select class="input" id="ribbon">
+            <option value="pink">Pink</option><option value="red">Red</option><option value="sage">Sage</option><option value="brown">Brown</option><option value="gold">Gold</option></select></div>
+        </div>
+        <div class="field"><label for="card-msg">Card message</label><textarea class="input" id="card-msg" maxlength="80" rows="2" placeholder="For you, always 💗"></textarea></div>
+        <div class="row">
+          <button class="btn" id="b-download">Download PNG</button>
+          <button class="btn btn--sage" id="share-bouquet" type="button">Publish + share</button>
+          <button class="btn btn--sage" id="b-save" hidden>Save to Memory Wall</button>
+        </div>
+        <div class="share-result" id="bouquet-share-result" role="status" aria-live="polite"></div>
+        <p class="hint">Published creations are public and appear on the Memory Wall.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

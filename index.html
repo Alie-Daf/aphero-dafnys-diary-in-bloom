@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Asks search engines not to list this page. A request, not protection. -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>Dafny’s Diary in Bloom</title>
+  <meta name="description" content="A little world made for Dafny.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Indie+Flower&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- Order matters: variables first, then base, then components, then this page's styles -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css?v=2">
+  <link rel="stylesheet" href="css/components.css?v=6">
+  <link rel="stylesheet" href="css/home.css?v=3">
+  <script type="module" src="js/home.js"></script>
+</head>
+<body>
+  <main class="fade-in">
+    <section class="hero">
+      <div class="hero__sprig" id="sprig" aria-hidden="true"></div>
+      <p class="eyebrow">Our little world</p>
+      <h1>Hi, Dafny</h1>
+      <p class="hero__sub">Welcome to your diary in bloom, a tiny world I made just for you.</p>
+    </section>
+
+    <section class="counters" aria-label="Our time together">
+      <div class="card card--tilt-l counter">
+        <p class="counter__number" id="days-together" aria-live="polite">0</p>
+        <p class="counter__label" id="days-label">days together</p>
+        <p class="counter__small"><strong id="months-together">0</strong> <span id="months-word">months</span> since September 11, 2026</p>
+      </div>
+      <div class="card card--tilt-r counter">
+        <p class="counter__number" id="next-monthsary">0</p>
+        <p class="counter__label" id="next-label">days until our next monthsary</p>
+      </div>
+    </section>
+
+    <div class="section-divider" aria-hidden="true"><span class="section-divider__bow"></span></div>
+    <h2 class="rooms-title">Pick a room</h2>
+    <nav class="rooms" aria-label="Rooms">
+      <a class="card card--tilt-l room" href="pages/letters.html"><span class="icon-badge" data-icon="letter"></span><span class="room__name">Letter Room</span><span class="room__hint">notes for you</span></a>
+      <a class="card card--tilt-r room" href="pages/bouquet.html"><span class="icon-badge icon-badge--sage" data-icon="flower"></span><span class="room__name">Bouquet</span><span class="room__hint">build flowers</span></a>
+      <a class="card card--tilt-r room" href="pages/photobooth.html"><span class="icon-badge" data-icon="camera"></span><span class="room__name">Photobooth</span><span class="room__hint">strike a pose</span></a>
+      <a class="card card--tilt-l room" href="pages/memories.html"><span class="icon-badge icon-badge--sage" data-icon="frame"></span><span class="room__name">Memory Wall</span><span class="room__hint">our months</span></a>
+      <a class="card card--tilt-l room" href="pages/library.html"><span class="icon-badge" data-icon="book"></span><span class="room__name">Library</span><span class="room__hint">things I wrote</span></a>
+      <a class="card card--tilt-r room" href="pages/welcome.html" id="replay"><span class="icon-badge icon-badge--sage" data-icon="key"></span><span class="room__name">The Door</span><span class="room__hint">our secret question</span></a>
+    </nav>
+  </main>
+  <footer class="site-footer">made with love, for Dafny <span class="footer-heart" data-icon="heart"></span></footer>
+  <script type="module">
+    // "The Door" lets her replay the welcome ritual by clearing the remembered pass.
+    import { PASSED_KEY } from "./js/utils.js";
+    document.getElementById("replay").addEventListener("click", () => localStorage.removeItem(PASSED_KEY));
+  </script>
+</body>
+</html>

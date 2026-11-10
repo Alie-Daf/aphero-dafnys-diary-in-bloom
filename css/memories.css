@@ -1,0 +1,32 @@
+/* memories.css */
+.timeline { position: relative; padding-left: var(--space-4); margin-bottom: var(--space-6); }
+.timeline::before { content: ""; position: absolute; left: 8px; top: 0; bottom: 0; border-left: 3px dashed var(--blush-deep); }
+.month { position: relative; margin-bottom: var(--space-5); }
+.month::before { content: ""; position: absolute; left: calc(-1 * var(--space-4) - 4px); top: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--blush); border: 1.5px solid var(--brown); }
+.month__date { color: var(--brown-soft); margin-top: calc(-1 * var(--space-2)); }
+.mem-grid, .cre-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-4) var(--space-3); margin-top: var(--space-3); }
+.memory-card { width: 100%; min-height: 220px; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--brown);
+  text-align: left; font: inherit; cursor: pointer; perspective: 900px; }
+.memory-card:nth-child(3n+1) { transform: rotate(-2deg); }
+.memory-card:nth-child(3n+2) { transform: rotate(1.5deg); }
+.memory-card:focus-visible { outline-offset: 6px; }
+.memory-card__inner { display: grid; min-height: 220px; transform-style: preserve-3d; transition: transform .6s var(--ease); }
+.memory-card[aria-pressed="true"] .memory-card__inner { transform: rotateY(180deg); }
+.memory-card__face { grid-area: 1 / 1; display: flex; flex-direction: column; align-items: center; min-height: 220px; padding: var(--space-2) var(--space-2) var(--space-3);
+  border-radius: 6px; background: var(--white); box-shadow: var(--shadow-soft); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.memory-card__front img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 3px; background: var(--cream); }
+.memory-card__placeholder { display: grid; place-items: center; width: 100%; flex: 1; border-radius: 3px; background: var(--blush); font-family: var(--font-heading); font-size: 1.5rem; }
+.memory-card__title, .memory-card__back-title { margin-top: var(--space-2); font: 600 1.25rem/1.1 var(--font-display); text-align: center; }
+.memory-card__date { margin-top: var(--space-1); color: var(--brown-soft); font-size: .8rem; }
+.memory-card__hint { margin-top: auto; padding-top: var(--space-2); color: var(--rose); font-size: .75rem; font-weight: 700; }
+.memory-card__back { justify-content: center; transform: rotateY(180deg); background: var(--sage-light); text-align: center; }
+.memory-card__back-title { margin: 0; }
+.memory-card__note { margin-top: var(--space-3); white-space: pre-wrap; overflow-wrap: anywhere; font-size: .9rem; line-height: 1.5; }
+.cre-grid .polaroid img { aspect-ratio: auto; max-height: 360px; object-fit: contain; }
+.community-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--space-3); margin: var(--space-3) 0 var(--space-5); }
+.community-card { display: flex; flex-direction: column; gap: var(--space-1); min-height: 112px; padding: var(--space-3); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--white); box-shadow: var(--shadow-soft); text-decoration: none; overflow-wrap: anywhere; }
+.community-card span { color: var(--brown-soft); font-size: .85rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .memory-card__inner { transition: none; }
+}

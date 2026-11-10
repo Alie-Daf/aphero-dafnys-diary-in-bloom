@@ -1,0 +1,11 @@
+.post-page { max-width: 760px; }
+.shared-post { margin: var(--space-4) auto; overflow-wrap: anywhere; }
+.shared-post h2 { font-family: var(--font-display); }
+.shared-post__image { display: block; width: min(100%, 680px); max-height: 75vh; object-fit: contain; margin: 0 auto; border-radius: var(--radius-sm); }
+.shared-post__body { white-space: pre-wrap; overflow-wrap: anywhere; }
+.shared-post__meta { margin-top: var(--space-3); color: var(--brown-soft); font-size: .9rem; }
+.shared-letter-stage { margin: var(--space-4) auto; }
+.post-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: center; margin: var(--space-3) 0; }
+.post-privacy { margin-top: var(--space-5); }
+.post-report { margin: var(--space-4) 0; }
+.post-report summary { cursor: pointer; min-height: var(--tap); font-weight: 700; }

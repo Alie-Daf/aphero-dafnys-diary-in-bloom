@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Asks search engines not to list this page. A request, not protection. -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>Library | Dafny's Diary in Bloom</title>
+  <meta name="description" content="Things I wrote for Dafny.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Indie+Flower&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css?v=2">
+  <link rel="stylesheet" href="../css/components.css?v=6">
+  <link rel="stylesheet" href="../css/library.css">
+  <script type="module" src="../js/library.js"></script>
+</head>
+<body>
+  <main class="fade-in">
+    <p class="eyebrow page-title">Library</p>
+    <h1 class="page-title">Little things I wrote</h1>
+    <p class="page-sub">Poems and notes. Pick a book from the shelf.</p>
+    <section class="card library-share" aria-labelledby="library-share-title">
+      <h2 id="library-share-title">Publish something to the community</h2>
+      <p class="hint">Your post and optional image will be public. Only share writing and images you have permission to post.</p>
+      <form id="library-post-form">
+        <div class="field"><label for="library-post-title">Title</label><input class="input" id="library-post-title" maxlength="120" required></div>
+        <div class="field"><label for="library-post-body">Writing</label><textarea class="input" id="library-post-body" maxlength="12000" rows="6" placeholder="A poem, note, or something you made"></textarea></div>
+        <div class="field"><label for="library-post-tags">Tags (comma separated)</label><input class="input" id="library-post-tags" maxlength="300" placeholder="poem, note"></div>
+        <div class="field"><label for="library-post-image">Image (optional)</label><input class="input" id="library-post-image" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></div>
+        <button class="btn btn--sage" type="submit">Publish to community</button>
+      </form>
+      <div class="share-result" id="library-share-result" role="status" aria-live="polite"></div>
+    </section>
+    <form class="card filters" id="filters" role="search" onsubmit="return false">
+      <div class="field"><label for="q">Search</label><input class="input" id="q" type="search" placeholder="Search words, titles, tags…"></div>
+      <div class="row">
+        <div class="field"><label for="tag">Tag</label><select class="input" id="tag"><option value="">All tags</option></select></div>
+        <div class="field"><label for="from">From</label><input class="input" id="from" type="date"></div>
+        <div class="field"><label for="to">To</label><input class="input" id="to" type="date"></div>
+      </div>
+    </form>
+    <p class="hint" id="lib-status" role="status" style="text-align:center">Dusting off the shelves…</p>
+    <div class="shelf" id="shelf"></div>
+
+    <dialog class="book" id="book" aria-labelledby="book-title">
+      <div class="book__top">
+        <h2 id="book-title"></h2>
+        <button class="btn btn--small btn--ghost" id="book-close" aria-label="Close book">✕</button>
+      </div>
+      <div class="book__pages" id="book-pages"></div>
+      <div class="book__nav">
+        <button class="btn btn--small" id="prev" aria-label="Previous page">← Prev</button>
+        <span id="page-count" aria-live="polite"></span>
+        <button class="btn btn--small" id="next" aria-label="Next page">Next →</button>
+      </div>
+    </dialog>
+  </main>
+</body>
+</html>

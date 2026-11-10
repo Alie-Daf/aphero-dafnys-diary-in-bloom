@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Asks search engines not to list this page. A request, not protection. -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>A letter for you 💌 | Dafny's Diary in Bloom</title>
+  <meta name="description" content="A letter written for Dafny.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Indie+Flower&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css?v=2">
+  <link rel="stylesheet" href="../css/components.css?v=6">
+  <link rel="stylesheet" href="../css/letters.css?v=2">
+  <script type="module" src="../js/letter-view.js"></script>
+</head>
+<body>
+  <main class="fade-in">
+    <div class="stage" id="stage">
+      <p class="hint" id="view-status" role="status" style="text-align:center">Finding your letter…</p>
+      <button class="envelope" id="envelope" type="button" aria-label="Open your letter" hidden>
+        <span class="envelope__paper" aria-hidden="true"></span>
+        <span class="envelope__front" aria-hidden="true"></span>
+        <span class="envelope__flap" aria-hidden="true"></span>
+        <span class="envelope__seal" id="envelope-seal" aria-hidden="true"></span>
+      </button>
+      <p class="envelope-hint" id="envelope-hint" hidden>Tap the envelope to open 💌</p>
+      <div class="letter-reveal" id="letter-slot"></div>
+      <div class="spotify-box letter-reveal" id="letter-song"></div>
+      <p class="letter-reveal" style="text-align:center"><a class="btn btn--sage" href="letters.html">More letters</a></p>
+    </div>
+  </main>
+</body>
+</html>

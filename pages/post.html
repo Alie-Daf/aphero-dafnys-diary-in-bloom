@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Shared creation | Dafny's Diary in Bloom</title>
+  <meta name="description" content="A creation shared with Dafny's Diary in Bloom.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Indie+Flower&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css?v=2">
+  <link rel="stylesheet" href="../css/components.css?v=6">
+  <link rel="stylesheet" href="../css/letters.css?v=2">
+  <link rel="stylesheet" href="../css/post.css">
+  <script type="module" src="../js/post.js"></script>
+</head>
+<body>
+  <main class="fade-in post-page">
+    <p class="eyebrow page-title">Community creation</p>
+    <h1 class="page-title" id="post-title">Shared creation</h1>
+    <p class="hint" id="post-status" role="status"></p>
+    <article class="card shared-post" id="post-content" hidden></article>
+    <div class="stage shared-letter-stage" id="shared-letter-stage" hidden>
+      <button class="envelope" id="shared-letter-envelope" type="button" aria-label="Open your letter" hidden>
+        <span class="envelope__paper" aria-hidden="true"></span>
+        <span class="envelope__front" aria-hidden="true"></span>
+        <span class="envelope__flap" aria-hidden="true"></span>
+        <span class="envelope__seal" id="shared-letter-seal" aria-hidden="true"></span>
+      </button>
+      <p class="envelope-hint" id="shared-letter-hint" hidden>Tap the envelope to open 💌</p>
+      <div class="letter-reveal" id="shared-letter-slot"></div>
+      <div class="spotify-box letter-reveal" id="shared-letter-song"></div>
+    </div>
+    <div class="post-actions" id="post-actions" hidden>
+      <button class="btn" type="button" id="share-post">Share this creation</button>
+      <button class="btn btn--danger" type="button" id="delete-post" hidden>Delete my post</button>
+    </div>
+    <p class="notice notice--warn post-privacy">Shared creations are public. Anyone with the link may view or copy them.</p>
+    <details class="post-report" id="report-section" hidden>
+      <summary>Report this post</summary>
+      <form id="report-form">
+        <div class="field"><label for="report-reason">Reason</label>
+          <select class="input" id="report-reason" required>
+            <option value="spam">Spam</option>
+            <option value="inappropriate">Inappropriate content</option>
+            <option value="private_info">Personal information</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="field"><label for="report-note">Details (optional)</label><textarea class="input" id="report-note" maxlength="500" rows="3"></textarea></div>
+        <button class="btn btn--small" type="submit">Send report</button>
+      </form>
+    </details>
+  </main>
+</body>
+</html>

@@ -1,0 +1,19 @@
+/* bouquet.css */
+#bouquet { width: 100%; height: auto; aspect-ratio: 600 / 750; display: block; border-radius: var(--radius-sm);
+  touch-action: none;           /* lets us handle dragging instead of the page scrolling */
+  cursor: grab; background: var(--cream); box-shadow: inset 0 0 0 1.5px #E8D8CC; }
+#bouquet:active { cursor: grabbing; }
+
+/* The tray: a row of round flower tiles you scroll sideways */
+.tray-tabs { margin-bottom: var(--space-3); }
+.tray { display: flex; gap: var(--space-2); overflow-x: auto; padding: var(--space-1) 0 var(--space-3); margin-bottom: var(--space-3);
+  scroll-snap-type: x proximity; }
+.tile { flex: none; width: 76px; border: 0; background: transparent; cursor: pointer; padding: 0; scroll-snap-align: start;
+  display: flex; flex-direction: column; align-items: center; gap: 6px; font: 600 .7rem var(--font-body); color: var(--brown); }
+.tile__art { width: 68px; height: 68px; border-radius: 50%; background: var(--white); box-shadow: var(--shadow-soft);
+  display: grid; place-items: center; overflow: hidden; transition: transform .15s var(--ease); }
+.tile__art svg { width: 44px; height: 66px; }
+.tile:hover .tile__art, .tile:focus-visible .tile__art { transform: translateY(-3px); }
+.tile__tag { color: var(--rose); font-weight: 700; }
+
+.bouquet-selects .field { flex: 1; min-width: 130px; }

@@ -1,0 +1,36 @@
+/* home.css: styles only the home page uses. */
+.hero { position: relative; z-index: 1; margin-top: var(--space-3); }
+.hero h1 { margin-bottom: var(--space-2); }
+.hero .eyebrow::before { content: "♥ "; }
+.hero__sub { font-size: 1.05rem; color: var(--brown-soft); max-width: 18rem; }
+/* A painted sprig in the corner (filled in by home.js) */
+.hero__sprig { position: absolute; right: 0; top: -8px; width: 92px; opacity: .95; }
+@media (min-width: 820px) {
+  .hero { text-align: center; margin-top: var(--space-5); }
+  .hero__sub { max-width: none; }
+  .hero__sprig { right: 8%; width: 130px; }
+}
+
+.counters { display: grid; gap: var(--space-3); margin: var(--space-5) 0 var(--space-4); position: relative; z-index: 1; grid-template-columns: 1fr 1fr; }
+.counter { text-align: center; padding: var(--space-4) var(--space-2) var(--space-3); background: #FFFCFA; border: 1px solid rgba(168,96,110,.28); }
+.counter::before, .room::before { content: ""; position: absolute; z-index: 1; top: -14px; left: 50%; width: 32px; height: 24px;
+  transform: translateX(-50%); background: url("../assets/bow.svg") center / contain no-repeat; }
+.counter__number { font-family: var(--font-display); font-weight: 600; font-size: 3.4rem; line-height: 1; margin-bottom: var(--space-1); }
+.counter__label { font-size: .9rem; margin: 0; }
+.counter__small { font-size: .75rem; color: var(--brown-soft); margin: var(--space-1) 0 0; }
+
+.rooms-title { margin-top: 0; margin-bottom: var(--space-3); text-align: center; }
+.section-divider { display: flex; align-items: center; gap: var(--space-2); margin: var(--space-4) 0 var(--space-3); color: var(--rose); }
+.section-divider::before, .section-divider::after { content: ""; height: 1px; flex: 1; background: rgba(168,96,110,.32); }
+.section-divider__bow { width: 32px; height: 24px; flex: none;
+  background: url("../assets/bow.svg") center / contain no-repeat; }
+.rooms { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4) var(--space-3); position: relative; z-index: 1; }
+@media (min-width: 820px) { .rooms { grid-template-columns: repeat(3, 1fr); } .rooms-title { text-align: center; } }
+.room { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-1); min-height: 150px; margin-top: 8px;
+  text-decoration: none; transition: transform .2s var(--ease), box-shadow .2s; }
+.room:nth-child(odd) { background: #FFF7F5; }
+.room:nth-child(even) { background: #F7F8F1; }
+.room:hover, .room:focus-visible { transform: rotate(0) translateY(-4px); box-shadow: var(--shadow-lift); }
+.room__name { font-family: var(--font-display); font-weight: 600; font-size: 1.4rem; line-height: 1.1; margin-top: var(--space-2); }
+.room__hint { font-size: .8rem; color: var(--brown-soft); }
+.footer-heart .icon { width: 20px; height: 20px; stroke: var(--rose); vertical-align: -3px; }

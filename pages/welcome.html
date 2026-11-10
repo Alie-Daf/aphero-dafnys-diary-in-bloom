@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>The Door | Dafny's Diary in Bloom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Indie+Flower&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css?v=2">
+  <link rel="stylesheet" href="../css/components.css?v=6">
+  <link rel="stylesheet" href="../css/welcome.css?v=2">
+  <script type="module" src="../js/nav.js"></script>
+  <script type="module" src="../js/welcome.js"></script>
+</head>
+<body>
+  <main class="welcome">
+    <div class="card fade-in">
+      <span class="tape" aria-hidden="true"></span>
+      <div class="welcome__icon icon-badge" data-icon="letter" aria-hidden="true"></div>
+      <p class="eyebrow">The Door</p>
+      <h1>Our secret question</h1>
+      <p>Answer it right, and the door opens.</p>
+      <form id="secret-form" novalidate>
+        <div class="field">
+          <!-- Change this question to your own -->
+          <label for="answer">What day did our story begin?</label>
+          <input class="input" id="answer" name="answer" type="text" autocomplete="off" placeholder="Type here…" required>
+        </div>
+        <button class="btn" type="submit">Open the door</button>
+        <p class="message" id="message" role="status" aria-live="polite"></p>
+      </form>
+      <button class="btn btn--ghost welcome__skip" id="skip" type="button">Just let me in</button>
+    </div>
+  </main>
+</body>
+</html>

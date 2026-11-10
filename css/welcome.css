@@ -1,0 +1,10 @@
+/* welcome.css — the secret-question gate. */
+.welcome { min-height: calc(100vh - 64px - var(--tabbar) - env(safe-area-inset-bottom, 0px));
+  display: grid; place-items: center; padding: var(--space-3); position: relative; z-index: 1; }
+.welcome .card { max-width: 420px; width: 100%; text-align: center; }
+.welcome__icon { margin: 0 auto var(--space-3); }
+.message { min-height: 1.6em; font-weight: 700; color: var(--brown-soft); }
+.message.is-wrong { animation: wiggle .4s; }
+@keyframes wiggle { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.welcome__skip { display: inline-flex; align-items: center; min-height: var(--tap); margin-top: var(--space-2); font-size: .9rem; }
+@media (min-width: 820px) { .welcome { min-height: calc(100vh - 72px); } }

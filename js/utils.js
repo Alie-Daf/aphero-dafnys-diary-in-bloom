@@ -75,6 +75,75 @@ export function spotifyIframe(url, autoplay = false) {
     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="${autoplay ? "eager" : "lazy"}"></iframe>`;
 }
 
+let spotifyIframeApiPromise;
+function loadSpotifyIframeApi() {
+  if (window.SpotifyIframeApi) return Promise.resolve(window.SpotifyIframeApi);
+  if (!spotifyIframeApiPromise) {
+    spotifyIframeApiPromise = new Promise((resolve, reject) => {
+      window.onSpotifyIframeApiReady = api => {
+        window.SpotifyIframeApi = api;
+        resolve(api);
+      };
+      const script = document.createElement("script");
+      script.src = "https://open.spotify.com/embed/iframe-api/v1";
+      script.async = true;
+      script.onerror = () => reject(new Error("Spotify's player controls could not be loaded."));
+      document.head.appendChild(script);
+    });
+  }
+  return spotifyIframeApiPromise;
+}
+
+export async function mountSpotifyPlayer(container, button, status, url) {
+  const match = new URL(url).pathname.match(/^\/embed\/(track|album|playlist|episode)\/([A-Za-z0-9]{22})$/);
+  if (!match) throw new Error("This Spotify link is not supported.");
+
+  button.hidden = false;
+  button.disabled = true;
+  button.textContent = "Loading player…";
+  status.textContent = "Loading the song player here on the page…";
+
+  try {
+    const api = await loadSpotifyIframeApi();
+    const controller = await new Promise((resolve, reject) => {
+      try {
+        api.createController(container, {
+          uri: `spotify:${match[1]}:${match[2]}`,
+          width: "100%",
+          height: "152",
+        }, resolve);
+      } catch (error) {
+        reject(error);
+      }
+    });
+
+    let isPlaying = false;
+    controller.addListener("playback_update", event => {
+      isPlaying = !event.data.isPaused;
+      button.textContent = isPlaying ? "Pause song" : "Play song";
+      button.setAttribute("aria-pressed", String(isPlaying));
+      status.textContent = isPlaying ? "Playing here while you read 💚" : "Use Play song to listen here while you read.";
+    });
+    button.disabled = false;
+    button.textContent = "Play song";
+    status.textContent = "Tap Play song to listen here while you read.";
+    button.addEventListener("click", () => {
+      try {
+        if (isPlaying) controller.pause();
+        else controller.play();
+      } catch (error) {
+        console.error("Could not control Spotify playback.", error);
+        status.textContent = "Couldn't start playback. Try the play control in the player below.";
+      }
+    });
+  } catch (error) {
+    console.error("Could not load the Spotify player controls.", error);
+    container.innerHTML = spotifyIframe(url);
+    button.hidden = true;
+    status.textContent = "The player is still here on the page. Use its play control to listen.";
+  }
+}
+
 // A small pop-up message at the bottom of the screen (read aloud by screen readers).
 export function toast(msg) {
   let el = document.getElementById("toast");

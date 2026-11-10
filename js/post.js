@@ -1,6 +1,6 @@
 import "./nav.js";
 import { supabase } from "./supabaseClient.js";
-import { formatDate, toast, spotifyEmbedUrl, spotifyIframe, prefersReducedMotion } from "./utils.js";
+import { formatDate, toast, spotifyEmbedUrl, mountSpotifyPlayer, prefersReducedMotion } from "./utils.js";
 import { ownerToken, POST_KINDS, removeSharedPost, safeImageUrl } from "./sharing.js";
 import { letterHtml, parseTheme, ENVELOPES, SEALS, SEAL_ICONS } from "./letterTheme.js";
 import { icon } from "./icons.js";
@@ -54,9 +54,9 @@ function renderPost(row) {
     envelope.hidden = false;
     $("shared-letter-hint").hidden = false;
     envelope.addEventListener("click", () => {
-      if (song) $("shared-letter-song").innerHTML = spotifyIframe(song, true);
+      if (song) mountSpotifyPlayer($("shared-letter-song-player"), $("shared-letter-song-toggle"), $("shared-letter-song-status"), song);
       stage.classList.add("is-open");
-      if (song) $("shared-letter-hint").textContent = "Opening your letter and starting the song if your browser allows it…";
+      if (song) $("shared-letter-hint").textContent = "Opening your letter…";
       setTimeout(() => stage.classList.add("is-revealed"), prefersReducedMotion() ? 0 : 1300);
     }, { once: true });
   } else {

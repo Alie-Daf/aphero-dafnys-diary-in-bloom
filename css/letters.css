@@ -23,6 +23,8 @@
 .composer summary::-webkit-details-marker { display: none; }
 .sticker-set { border: none; padding: 0; }
 .spotify-box { margin-top: var(--space-3); }
+.spotify-play-button { margin-bottom: var(--space-2); }
+.spotify-box .hint { margin: 0 0 var(--space-2); }
 
 /* ---- The letter paper ---- */
 .letter { position: relative; padding: var(--space-5) var(--space-4); border-radius: var(--radius);

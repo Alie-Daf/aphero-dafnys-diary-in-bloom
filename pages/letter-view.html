@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="../css/variables.css">
   <link rel="stylesheet" href="../css/base.css?v=2">
   <link rel="stylesheet" href="../css/components.css?v=6">
-  <link rel="stylesheet" href="../css/letters.css?v=2">
+  <link rel="stylesheet" href="../css/letters.css?v=3">
   <script type="module" src="../js/letter-view.js"></script>
 </head>
 <body>
@@ -28,7 +28,11 @@
       </button>
       <p class="envelope-hint" id="envelope-hint" hidden>Tap the envelope to open 💌</p>
       <div class="letter-reveal" id="letter-slot"></div>
-      <div class="spotify-box letter-reveal" id="letter-song"></div>
+      <div class="spotify-box letter-reveal" id="letter-song">
+        <button class="btn btn--sage spotify-play-button" id="letter-song-toggle" type="button" hidden>Play song</button>
+        <p class="hint" id="letter-song-status" role="status"></p>
+        <div id="letter-song-player"></div>
+      </div>
       <p class="letter-reveal" style="text-align:center"><a class="btn btn--sage" href="letters.html">More letters</a></p>
     </div>
   </main>

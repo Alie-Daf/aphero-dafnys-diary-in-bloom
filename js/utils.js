@@ -64,7 +64,7 @@ export function escapeHtml(s = "") {
 // (and album / playlist / episode links too).
 export function spotifyEmbedUrl(input) {
   if (!input) return null;
-  const m = String(input).match(/(?:open\.spotify\.com\/(?:intl-[a-z-]+\/)?|spotify:)(track|album|playlist|episode)[/:]([A-Za-z0-9]{22})/);
+  const m = String(input).match(/(?:open\.spotify\.com\/(?:intl-[a-z-]+\/)?(?:embed\/)?|spotify:)(track|album|playlist|episode)[/:]([A-Za-z0-9]{22})/);
   return m ? `https://open.spotify.com/embed/${m[1]}/${m[2]}` : null;
 }
 
